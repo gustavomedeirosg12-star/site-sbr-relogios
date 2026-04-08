@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useStore } from '../../context/StoreContext';
-import { ExternalLink } from 'lucide-react';
+import { Edit2, Trash2, X } from 'lucide-react';
+import { Order } from '../../data/mock';
 
 export function AdminOrders() {
-  const { orders } = useStore();
+  const { orders, updateOrder, deleteOrder } = useStore();
+  const [editingOrder, setEditingOrder] = useState<Order | null>(null);
+  const [status, setStatus] = useState('');
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -14,11 +17,29 @@ export function AdminOrders() {
     }
   };
 
+  const handleEdit = (order: Order) => {
+    setEditingOrder(order);
+    setStatus(order.status);
+  };
+
+  const handleSave = () => {
+    if (editingOrder) {
+      updateOrder(editingOrder.id, { status });
+      setEditingOrder(null);
+    }
+  };
+
+  const handleDelete = (id: string) => {
+    if (window.confirm('Tem certeza que deseja remover este pedido?')) {
+      deleteOrder(id);
+    }
+  };
+
   return (
     <div>
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-white mb-1">Pedidos</h2>
-        <p className="text-gray-400 text-sm">Acompanhe as vendas e faturamento</p>
+        <p className="text-gray-400 text-sm">Acompanhe e gerencie as vendas (Edite ou remova pedidos)</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -56,7 +77,7 @@ export function AdminOrders() {
                 <th className="p-4 font-medium">Total</th>
                 <th className="p-4 font-medium">Pagamento</th>
                 <th className="p-4 font-medium">Status</th>
-                <th className="p-4 font-medium text-right">Ação</th>
+                <th className="p-4 font-medium text-right">Ações (Editar/Remover)</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -82,16 +103,81 @@ export function AdminOrders() {
                     </span>
                   </td>
                   <td className="p-4 text-right">
-                    <button className="text-gold-500 hover:text-gold-400 transition-colors p-2">
-                      <ExternalLink size={16} />
-                    </button>
+                    <div className="flex items-center justify-end gap-2">
+                      <button 
+                        onClick={() => handleEdit(order)}
+                        className="p-2 text-gray-400 hover:text-white bg-dark-900 rounded-sm transition-colors"
+                        title="Editar Status"
+                      >
+                        <Edit2 size={16} />
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(order.id)}
+                        className="p-2 text-gray-400 hover:text-red-400 bg-dark-900 rounded-sm transition-colors"
+                        title="Remover Pedido"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
+              {orders.length === 0 && (
+                <tr>
+                  <td colSpan={8} className="p-8 text-center text-gray-400">
+                    Nenhum pedido encontrado.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
       </div>
+
+      {/* Modal de Edição de Pedido */}
+      {editingOrder && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-dark-800 border border-white/10 rounded-sm w-full max-w-md shadow-2xl">
+            <div className="flex justify-between items-center p-6 border-b border-white/10">
+              <h3 className="text-xl font-bold text-white">Editar Pedido {editingOrder.id}</h3>
+              <button onClick={() => setEditingOrder(null)} className="text-gray-400 hover:text-white">
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Status do Pedido</label>
+                <select 
+                  value={status}
+                  onChange={e => setStatus(e.target.value)}
+                  className="w-full bg-dark-900 border border-white/10 rounded-sm px-4 py-2.5 text-white focus:outline-none focus:border-gold-500"
+                >
+                  <option value="Pendente">Pendente</option>
+                  <option value="Pago">Pago</option>
+                  <option value="Enviado">Enviado</option>
+                  <option value="Cancelado">Cancelado</option>
+                </select>
+              </div>
+
+              <div className="pt-6 flex justify-end gap-3">
+                <button 
+                  onClick={() => setEditingOrder(null)}
+                  className="px-6 py-2.5 rounded-sm font-medium text-gray-300 hover:text-white transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button 
+                  onClick={handleSave}
+                  className="bg-gold-500 hover:bg-gold-600 text-dark-900 px-6 py-2.5 rounded-sm font-medium transition-colors"
+                >
+                  Salvar Alterações
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

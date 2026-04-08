@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Minus, Plus, Trash2, ArrowRight } from 'lucide-react';
+import { X, Minus, Plus, Trash2, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
 type CheckoutStep = 'cart' | 'checkout';
@@ -44,14 +44,14 @@ export function CartDrawer() {
   return (
     <AnimatePresence>
       {isCartOpen && (
-        <>
+        <motion.div key="backdrop" className="fixed inset-0 z-[60]">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           />
 
           {/* Drawer */}
@@ -60,7 +60,7 @@ export function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 h-full w-full max-w-md bg-dark-900 border-l border-white/10 z-[70] flex flex-col shadow-2xl"
+            className="absolute top-0 right-0 h-full w-full max-w-md bg-dark-900 border-l border-white/10 flex flex-col shadow-2xl"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-white/10">
@@ -207,8 +207,8 @@ export function CartDrawer() {
 
             {/* Footer */}
             {items.length > 0 && (
-              <div className="p-6 border-t border-white/10 bg-dark-800">
-                <div className="flex justify-between items-center mb-6">
+              <div className="p-6 border-t border-white/10 bg-dark-800 space-y-4">
+                <div className="flex justify-between items-center">
                   <span className="text-gray-400">Total</span>
                   <span className="text-2xl font-serif font-bold text-white">
                     {totalFormatted}
@@ -216,25 +216,41 @@ export function CartDrawer() {
                 </div>
 
                 {step === 'cart' ? (
-                  <button
-                    onClick={() => setStep('checkout')}
-                    className="w-full bg-gold-500 hover:bg-gold-600 text-dark-900 py-4 rounded-sm font-medium transition-colors flex items-center justify-center gap-2"
-                  >
-                    Avançar <ArrowRight size={18} />
-                  </button>
+                  <div className="space-y-3">
+                    <button
+                      onClick={() => setStep('checkout')}
+                      className="w-full bg-gold-500 hover:bg-gold-600 text-dark-900 py-4 rounded-sm font-medium transition-colors flex items-center justify-center gap-2"
+                    >
+                      Avançar <ArrowRight size={18} />
+                    </button>
+                    <button
+                      onClick={handleClose}
+                      className="w-full bg-dark-900 border border-white/10 hover:border-white/30 text-white py-4 rounded-sm font-medium transition-colors flex items-center justify-center gap-2"
+                    >
+                      Continuar comprando
+                    </button>
+                  </div>
                 ) : (
-                  <button
-                    onClick={handleWhatsAppCheckout}
-                    disabled={!name || !paymentMethod}
-                    className="w-full bg-[#25D366] hover:bg-[#128C7E] disabled:opacity-50 disabled:cursor-not-allowed text-white py-4 rounded-sm font-medium transition-colors flex items-center justify-center gap-2"
-                  >
-                    Finalizar no WhatsApp
-                  </button>
+                  <div className="space-y-3">
+                    <button
+                      onClick={handleWhatsAppCheckout}
+                      disabled={!name || !paymentMethod}
+                      className="w-full bg-[#25D366] hover:bg-[#128C7E] disabled:opacity-50 disabled:cursor-not-allowed text-white py-4 rounded-sm font-medium transition-colors flex items-center justify-center gap-2"
+                    >
+                      Finalizar no WhatsApp
+                    </button>
+                    <button
+                      onClick={() => setStep('cart')}
+                      className="w-full bg-dark-900 border border-white/10 hover:border-white/30 text-white py-4 rounded-sm font-medium transition-colors flex items-center justify-center gap-2"
+                    >
+                      <ArrowLeft size={18} /> Voltar ao carrinho
+                    </button>
+                  </div>
                 )}
               </div>
             )}
           </motion.div>
-        </>
+        </motion.div>
       )}
     </AnimatePresence>
   );

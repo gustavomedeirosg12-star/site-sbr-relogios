@@ -7,7 +7,9 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return isAuthenticated() && request.auth.token.email == "gustavomedeirosg12@gmail.com" && request.auth.token.email_verified == true;
+      return isAuthenticated() && 
+             (request.auth.token.email == "gustavomedeirosg12@gmail.com" || request.auth.token.email == "enriquegustavo816@gmail.com") && 
+             request.auth.token.email_verified == true;
     }
 
     // Products Collection

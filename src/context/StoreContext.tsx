@@ -11,9 +11,13 @@ interface StoreContextType {
   addProduct: (product: Omit<Product, 'id'>) => Promise<void>;
   updateProduct: (id: number, product: Partial<Product>) => Promise<void>;
   deleteProduct: (id: number) => Promise<void>;
+  updateOrder: (id: string, order: Partial<Order>) => Promise<void>;
+  deleteOrder: (id: string) => Promise<void>;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
+
+const ADMIN_EMAILS = ['gustavomedeirosg12@gmail.com', 'enriquegustavo816@gmail.com'];
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<Product[]>([]);
@@ -23,7 +27,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
-      if (user && user.email === 'gustavomedeirosg12@gmail.com') {
+      if (user && user.email && ADMIN_EMAILS.includes(user.email)) {
         setIsAdmin(true);
       } else {
         setIsAdmin(false);
@@ -92,6 +96,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       snapshot.forEach((doc) => {
         ords.push({ id: doc.id, ...doc.data() } as Order);
       });
+      // Sort orders by date descending
+      ords.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       setOrders(ords);
     }, (error) => {
       // Silently fail
@@ -145,8 +151,26 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const updateOrder = async (id: string, updatedOrder: Partial<Order>) => {
+    try {
+      await updateDoc(doc(db, 'orders', id), updatedOrder);
+    } catch (error) {
+      console.error("Error updating order:", error);
+      throw error;
+    }
+  };
+
+  const deleteOrder = async (id: string) => {
+    try {
+      await deleteDoc(doc(db, 'orders', id));
+    } catch (error) {
+      console.error("Error deleting order:", error);
+      throw error;
+    }
+  };
+
   return (
-    <StoreContext.Provider value={{ products, orders, customers, addProduct, updateProduct, deleteProduct }}>
+    <StoreContext.Provider value={{ products, orders, customers, addProduct, updateProduct, deleteProduct, updateOrder, deleteOrder }}>
       {children}
     </StoreContext.Provider>
   );

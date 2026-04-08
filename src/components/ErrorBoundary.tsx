@@ -10,10 +10,13 @@ interface State {
 }
 
 export class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false,
-    error: null
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: null
+    };
+  }
 
   public static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
@@ -29,7 +32,7 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="min-h-screen bg-dark-900 text-white flex flex-col items-center justify-center p-4">
           <div className="bg-red-500/10 border border-red-500/20 p-6 rounded-sm max-w-2xl w-full">
             <h1 className="text-xl font-bold text-red-500 mb-4">Ops! Ocorreu um erro inesperado.</h1>
-            <pre className="bg-dark-900 p-4 rounded-sm overflow-x-auto text-sm text-red-400 border border-white/5">
+            <pre className="bg-dark-900 p-4 rounded-sm overflow-x-auto text-sm text-red-400 border border-white/5 whitespace-pre-wrap">
               {this.state.error?.message}
               {'\n\n'}
               {this.state.error?.stack}
