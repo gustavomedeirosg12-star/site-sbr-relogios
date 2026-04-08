@@ -1,33 +1,148 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { collection, doc, onSnapshot, setDoc, updateDoc, deleteDoc, query, orderBy, getDocs } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
+import { db, auth } from '../firebase';
 import { products as initialProducts, mockOrders, mockCustomers, Product, Order, Customer } from '../data/mock';
 
 interface StoreContextType {
   products: Product[];
   orders: Order[];
   customers: Customer[];
-  addProduct: (product: Omit<Product, 'id'>) => void;
-  updateProduct: (id: number, product: Omit<Product, 'id'>) => void;
-  deleteProduct: (id: number) => void;
+  addProduct: (product: Omit<Product, 'id'>) => Promise<void>;
+  updateProduct: (id: number, product: Partial<Product>) => Promise<void>;
+  deleteProduct: (id: number) => Promise<void>;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
-  const [products, setProducts] = useState<Product[]>(initialProducts);
-  const [orders, setOrders] = useState<Order[]>(mockOrders);
-  const [customers, setCustomers] = useState<Customer[]>(mockCustomers);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  const addProduct = (product: Omit<Product, 'id'>) => {
-    const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-    setProducts([...products, { ...product, id: newId }]);
+  useEffect(() => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      if (user && user.email === 'gustavomedeirosg12@gmail.com') {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+        setOrders([]);
+        setCustomers([]);
+      }
+    });
+
+    return () => unsubscribeAuth();
+  }, []);
+
+  useEffect(() => {
+    // Listen to Products (Public)
+    const qProducts = query(collection(db, 'products'), orderBy('order', 'asc'));
+    const unsubProducts = onSnapshot(qProducts, (snapshot) => {
+      const prods: Product[] = [];
+      snapshot.forEach((doc) => {
+        prods.push({ id: Number(doc.id), ...doc.data() } as Product);
+      });
+      setProducts(prods);
+    }, (error) => {
+      // Ignore permission errors silently for public viewers if any
+    });
+
+    return () => {
+      unsubProducts();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+
+    // Seed initial data if empty (Only Admin)
+    const seedData = async () => {
+      try {
+        const productsSnap = await getDocs(collection(db, 'products'));
+        if (productsSnap.empty) {
+          for (const p of initialProducts) {
+            await setDoc(doc(db, 'products', p.id.toString()), p);
+          }
+        }
+        
+        const ordersSnap = await getDocs(collection(db, 'orders'));
+        if (ordersSnap.empty) {
+          for (const o of mockOrders) {
+            await setDoc(doc(db, 'orders', o.id), o);
+          }
+        }
+
+        const customersSnap = await getDocs(collection(db, 'customers'));
+        if (customersSnap.empty) {
+          for (const c of mockCustomers) {
+            await setDoc(doc(db, 'customers', c.id), c);
+          }
+        }
+      } catch (error) {
+        // Silently fail if permission denied
+      }
+    };
+
+    seedData();
+
+    // Listen to Orders (Admin Only)
+    const unsubOrders = onSnapshot(collection(db, 'orders'), (snapshot) => {
+      const ords: Order[] = [];
+      snapshot.forEach((doc) => {
+        ords.push({ id: doc.id, ...doc.data() } as Order);
+      });
+      setOrders(ords);
+    }, (error) => {
+      // Silently fail
+    });
+
+    // Listen to Customers (Admin Only)
+    const unsubCustomers = onSnapshot(collection(db, 'customers'), (snapshot) => {
+      const custs: Customer[] = [];
+      snapshot.forEach((doc) => {
+        custs.push({ id: doc.id, ...doc.data() } as Customer);
+      });
+      setCustomers(custs);
+    }, (error) => {
+      // Silently fail
+    });
+
+    return () => {
+      unsubOrders();
+      unsubCustomers();
+    };
+  }, [isAdmin]);
+
+  const addProduct = async (product: Omit<Product, 'id'>) => {
+    try {
+      const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+      await setDoc(doc(db, 'products', newId.toString()), {
+        ...product,
+        order: newId // Default order
+      });
+    } catch (error) {
+      console.error("Error adding product:", error);
+      throw error;
+    }
   };
 
-  const updateProduct = (id: number, updatedProduct: Omit<Product, 'id'>) => {
-    setProducts(products.map(p => p.id === id ? { ...updatedProduct, id } : p));
+  const updateProduct = async (id: number, updatedProduct: Partial<Product>) => {
+    try {
+      await updateDoc(doc(db, 'products', id.toString()), updatedProduct);
+    } catch (error) {
+      console.error("Error updating product:", error);
+      throw error;
+    }
   };
 
-  const deleteProduct = (id: number) => {
-    setProducts(products.filter(p => p.id !== id));
+  const deleteProduct = async (id: number) => {
+    try {
+      await deleteDoc(doc(db, 'products', id.toString()));
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      throw error;
+    }
   };
 
   return (

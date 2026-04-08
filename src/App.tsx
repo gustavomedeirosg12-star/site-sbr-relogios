@@ -7,6 +7,7 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { Hero } from './components/sections/Hero';
+import { BrandTicker } from './components/sections/BrandTicker';
 import { Categories } from './components/sections/Categories';
 import { Catalog } from './components/sections/Catalog';
 import { Trust } from './components/sections/Trust';
@@ -24,12 +25,14 @@ const AdminLogin = lazy(() => import('./components/admin/AdminLogin').then(m => 
 
 function Storefront() {
   return (
-    <div className="min-h-screen bg-dark-900 text-white font-sans selection:bg-gold-500 selection:text-dark-900">
+    <div className="min-h-screen bg-dark-900 text-white font-sans selection:bg-gold-500 selection:text-dark-900 relative">
+      <div className="noise-overlay"></div>
       <Navbar />
       <CartDrawer />
       
       <main>
         <Hero />
+        <BrandTicker />
         <Trust />
         <Categories />
         <Catalog />

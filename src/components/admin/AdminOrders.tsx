@@ -18,7 +18,7 @@ export function AdminOrders() {
     <div>
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-white mb-1">Pedidos</h2>
-        <p className="text-gray-400 text-sm">Acompanhe as vendas e faturamento (Dados Mockados)</p>
+        <p className="text-gray-400 text-sm">Acompanhe as vendas e faturamento</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

@@ -192,4 +192,8 @@ export const faqs = [
     question: 'Como funciona o envio?',
     answer: 'Oferecemos frete grátis para todo o Brasil via Sedex. Após a confirmação do pagamento, o código de rastreio é enviado diretamente no seu WhatsApp em até 24 horas úteis.',
   },
+  {
+    question: 'Os depoimentos no site são reais?',
+    answer: 'Os depoimentos exibidos no site são ilustrações baseadas em relatos e feedbacks reais de clientes da nossa operação, preservando a identidade dos mesmos por questões de privacidade e segurança.',
+  },
 ];

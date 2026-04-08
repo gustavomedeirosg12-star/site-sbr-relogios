@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.email == "gustavomedeirosg12@gmail.com" && request.auth.token.email_verified == true;
+    }
+
+    // Products Collection
+    match /products/{productId} {
+      // Anyone can read products
+      allow read: if true;
+      // Only admin can write products
+      allow write: if isAdmin();
+    }
+
+    // Orders Collection
+    match /orders/{orderId} {
+      // Only admin can read and write orders
+      allow read, write: if isAdmin();
+    }
+
+    // Customers Collection
+    match /customers/{customerId} {
+      // Only admin can read and write customers
+      allow read, write: if isAdmin();
+    }
+  }
+}
