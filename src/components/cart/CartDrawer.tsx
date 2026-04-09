@@ -30,12 +30,12 @@ export function CartDrawer() {
     if (!name || !paymentMethod) return;
 
     const itemsList = items
-      .map((i) => `${i.quantity}x ${i.name} (R$ ${i.price.toFixed(2)})`)
-      .join('\n');
+      .map((i) => `${i.quantity}x ${i.name}\n   ↳ ${i.box.name} (+R$ ${i.box.price.toFixed(2)})\n   Subtotal: R$ ${((i.price + i.box.price) * i.quantity).toFixed(2)}`)
+      .join('\n\n');
     
     const paymentText = paymentMethod === 'pix' ? 'PIX' : 'Cartão de Crédito';
     
-    const text = `Olá! Gostaria de finalizar meu pedido.\n\n*Nome:* ${name}\n*Forma de Pagamento:* ${paymentText}\n\n*Pedido:*\n${itemsList}\n\n*Total:* ${totalFormatted}`;
+    const text = `Olá! Gostaria de finalizar meu pedido.\n\n*Nome:* ${name}\n*Forma de Pagamento:* ${paymentText}\n\n*Pedido:*\n${itemsList}\n\n*Frete:* Grátis\n*Total:* ${totalFormatted}`;
     
     const encoded = encodeURIComponent(text);
     window.open(`https://wa.me/553484304734?text=${encoded}`, '_blank');
@@ -90,7 +90,7 @@ export function CartDrawer() {
               ) : step === 'cart' ? (
                 <div className="space-y-6">
                   {items.map((item) => (
-                    <div key={item.id} className="flex gap-4 bg-dark-800 p-4 rounded-sm border border-white/5">
+                    <div key={item.cartItemId} className="flex gap-4 bg-dark-800 p-4 rounded-sm border border-white/5">
                       <img
                         src={item.image}
                         alt={item.name}
@@ -99,17 +99,21 @@ export function CartDrawer() {
                       <div className="flex-1 flex flex-col justify-between">
                         <div>
                           <h3 className="text-white font-medium text-sm">{item.name}</h3>
-                          <p className="text-gold-500 text-sm mt-1">
+                          <p className="text-gray-400 text-xs mt-0.5 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-gold-500 inline-block"></span>
+                            {item.box.name}
+                          </p>
+                          <p className="text-gold-500 text-sm mt-1 font-medium">
                             {new Intl.NumberFormat('pt-BR', {
                               style: 'currency',
                               currency: 'BRL',
-                            }).format(item.price)}
+                            }).format(item.price + item.box.price)}
                           </p>
                         </div>
                         <div className="flex items-center justify-between mt-2">
                           <div className="flex items-center gap-3 bg-dark-900 rounded-sm px-2 py-1 border border-white/10">
                             <button
-                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
                               className="text-gray-400 hover:text-white"
                             >
                               <Minus size={14} />
@@ -118,14 +122,14 @@ export function CartDrawer() {
                               {item.quantity}
                             </span>
                             <button
-                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
                               className="text-gray-400 hover:text-white"
                             >
                               <Plus size={14} />
                             </button>
                           </div>
                           <button
-                            onClick={() => removeFromCart(item.id)}
+                            onClick={() => removeFromCart(item.cartItemId)}
                             className="text-red-400 hover:text-red-300 transition-colors"
                           >
                             <Trash2 size={16} />
@@ -260,7 +264,7 @@ export function CartDrawer() {
                   </div>
                   <div className="flex flex-col items-center text-center gap-2">
                     <Truck size={24} className="text-gold-500" />
-                    <span className="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Frete<br/>Expresso</span>
+                    <span className="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Frete<br/>Grátis</span>
                   </div>
                 </div>
               </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ShoppingBag, Flame, MessageCircle, X, ChevronLeft, ChevronRight, ZoomIn, Users } from 'lucide-react';
-import { useCart } from '../../context/CartContext';
+import { ShoppingBag, Flame, MessageCircle, X, ChevronLeft, ChevronRight, ZoomIn, Users, Package } from 'lucide-react';
+import { useCart, boxOptions, BoxOption } from '../../context/CartContext';
 import { useStore } from '../../context/StoreContext';
 import { Product } from '../../data/mock';
 
@@ -13,6 +13,7 @@ export function Catalog() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
+  const [selectedBox, setSelectedBox] = useState<BoxOption>(boxOptions[0]);
 
   useEffect(() => {
     const handleSetFilter = (e: Event) => {
@@ -55,6 +56,7 @@ export function Catalog() {
     setSelectedProduct(product);
     setCurrentImageIndex(0);
     setShowVideo(false);
+    setSelectedBox(boxOptions[0]); // Reset box selection
   };
 
   const closeQuickView = () => {
@@ -196,7 +198,7 @@ export function Catalog() {
                   
                   <div className="flex flex-col gap-3">
                     <button 
-                      onClick={() => addToCart(product)}
+                      onClick={() => openQuickView(product)}
                       className="hover-shine w-full bg-gold-500 hover:bg-gold-400 text-dark-900 py-4 rounded-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider"
                     >
                       <ShoppingBag size={16} />
@@ -342,7 +344,7 @@ export function Catalog() {
                   <span className="text-gray-500 text-sm tracking-wide">ou 12x no cartão de crédito</span>
                 </div>
 
-                <div className="space-y-4 mb-10 flex-1">
+                <div className="space-y-4 mb-8 flex-1">
                   <h4 className="text-white font-medium border-b border-white/10 pb-2">Especificações Técnicas</h4>
                   <ul className="space-y-3">
                     {getCategoryDetails(selectedProduct.category).map((detail, idx) => (
@@ -354,16 +356,52 @@ export function Catalog() {
                   </ul>
                 </div>
 
+                {/* Box Selection */}
+                <div className="mb-8 bg-dark-800 p-4 rounded-sm border border-white/5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Package size={18} className="text-gold-500" />
+                    <h4 className="text-white font-medium text-sm uppercase tracking-widest">Opções de Caixa</h4>
+                  </div>
+                  <p className="text-xs text-red-400 mb-4 font-medium uppercase tracking-wider">* Nenhuma peça acompanha caixa por padrão</p>
+                  
+                  <div className="space-y-2">
+                    {boxOptions.map((box) => (
+                      <label 
+                        key={box.id} 
+                        className={`flex items-center justify-between p-3 rounded-sm cursor-pointer border transition-all ${
+                          selectedBox.id === box.id 
+                            ? 'border-gold-500 bg-gold-500/10' 
+                            : 'border-white/10 hover:border-white/30 bg-dark-900'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                            selectedBox.id === box.id ? 'border-gold-500' : 'border-gray-500'
+                          }`}>
+                            {selectedBox.id === box.id && <div className="w-2 h-2 bg-gold-500 rounded-full" />}
+                          </div>
+                          <span className={`text-sm ${selectedBox.id === box.id ? 'text-white font-medium' : 'text-gray-400'}`}>
+                            {box.name}
+                          </span>
+                        </div>
+                        <span className="text-gold-500 text-sm font-medium">
+                          {box.price === 0 ? 'Grátis' : `+ R$ ${box.price.toFixed(2).replace('.', ',')}`}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="flex flex-col gap-3 mt-auto">
                   <button 
                     onClick={() => {
-                      addToCart(selectedProduct);
+                      addToCart(selectedProduct, selectedBox);
                       closeQuickView();
                     }}
                     className="hover-shine w-full bg-gold-500 hover:bg-gold-400 text-dark-900 py-4 rounded-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 uppercase tracking-wider"
                   >
                     <ShoppingBag size={18} />
-                    Adicionar ao Carrinho
+                    Adicionar ao Carrinho - {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(selectedProduct.price + selectedBox.price)}
                   </button>
                   <button 
                     onClick={() => handleWhatsApp(selectedProduct.name)}

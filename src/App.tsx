@@ -11,6 +11,7 @@ import { Craftsmanship } from './components/sections/Craftsmanship';
 import { BrandTicker } from './components/sections/BrandTicker';
 import { Categories } from './components/sections/Categories';
 import { Catalog } from './components/sections/Catalog';
+import { Experience } from './components/sections/Experience';
 import { Trust } from './components/sections/Trust';
 import { Reviews } from './components/sections/Reviews';
 import { FAQ } from './components/sections/FAQ';
@@ -42,6 +43,7 @@ function Storefront() {
         <Trust />
         <Categories />
         <Catalog />
+        <Experience />
         <Reviews />
         <FAQ />
       </main>

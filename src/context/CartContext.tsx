@@ -3,15 +3,31 @@ import { products } from '../data/mock';
 
 export type Product = typeof products[0];
 
+export interface BoxOption {
+  id: string;
+  name: string;
+  price: number;
+}
+
+export const boxOptions: BoxOption[] = [
+  { id: 'none', name: 'Sem Caixa (Apenas Relógio)', price: 0 },
+  { id: 'papelao', name: 'Caixa de Papelão', price: 6.00 },
+  { id: 'velcro', name: 'Caixa de Velcro', price: 6.50 },
+  { id: 'pressao', name: 'Caixa de Pressão', price: 25.00 },
+  { id: 'original', name: 'Caixa Original da Marca (Consultar)', price: 150.00 },
+];
+
 export interface CartItem extends Product {
+  cartItemId: string;
   quantity: number;
+  box: BoxOption;
 }
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (product: Product) => void;
-  removeFromCart: (productId: number) => void;
-  updateQuantity: (productId: number, quantity: number) => void;
+  addToCart: (product: Product, box: BoxOption) => void;
+  removeFromCart: (cartItemId: string) => void;
+  updateQuantity: (cartItemId: string, quantity: number) => void;
   total: number;
   isCartOpen: boolean;
   setIsCartOpen: (isOpen: boolean) => void;
@@ -23,31 +39,32 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Product, box: BoxOption) => {
     setItems((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
+      const cartItemId = `${product.id}-${box.id}`;
+      const existing = prev.find((item) => item.cartItemId === cartItemId);
       if (existing) {
         return prev.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.cartItemId === cartItemId ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
-      return [...prev, { ...product, quantity: 1 }];
+      return [...prev, { ...product, cartItemId, quantity: 1, box }];
     });
     setIsCartOpen(true);
   };
 
-  const removeFromCart = (productId: number) => {
-    setItems((prev) => prev.filter((item) => item.id !== productId));
+  const removeFromCart = (cartItemId: string) => {
+    setItems((prev) => prev.filter((item) => item.cartItemId !== cartItemId));
   };
 
-  const updateQuantity = (productId: number, quantity: number) => {
+  const updateQuantity = (cartItemId: string, quantity: number) => {
     if (quantity < 1) return;
     setItems((prev) =>
-      prev.map((item) => (item.id === productId ? { ...item, quantity } : item))
+      prev.map((item) => (item.cartItemId === cartItemId ? { ...item, quantity } : item))
     );
   };
 
-  const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const total = items.reduce((acc, item) => acc + (item.price + item.box.price) * item.quantity, 0);
 
   return (
     <CartContext.Provider
