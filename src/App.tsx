@@ -7,6 +7,7 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { Hero } from './components/sections/Hero';
+import { Craftsmanship } from './components/sections/Craftsmanship';
 import { BrandTicker } from './components/sections/BrandTicker';
 import { Categories } from './components/sections/Categories';
 import { Catalog } from './components/sections/Catalog';
@@ -15,6 +16,7 @@ import { Reviews } from './components/sections/Reviews';
 import { FAQ } from './components/sections/FAQ';
 import { Tracking } from './components/sections/Tracking';
 import { WhatsAppButton } from './components/ui/WhatsAppButton';
+import { Concierge } from './components/ui/Concierge';
 import { CustomCursor } from './components/ui/CustomCursor';
 import { CartProvider } from './context/CartContext';
 import { CartDrawer } from './components/cart/CartDrawer';
@@ -36,6 +38,7 @@ function Storefront() {
       <main>
         <Hero />
         <BrandTicker />
+        <Craftsmanship />
         <Trust />
         <Categories />
         <Catalog />
@@ -45,6 +48,7 @@ function Storefront() {
 
       <Footer />
       <WhatsAppButton />
+      <Concierge />
     </div>
   );
 }
@@ -63,6 +67,7 @@ function TrackingRoute() {
 
       <Footer />
       <WhatsAppButton />
+      <Concierge />
     </div>
   );
 }
