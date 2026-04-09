@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { AdminProducts } from './AdminProducts';
 import { AdminOrders } from './AdminOrders';
 import { AdminCustomers } from './AdminCustomers';
-import { LayoutDashboard, Package, ShoppingCart, Users, LogOut } from 'lucide-react';
+import { AdminSettings } from './AdminSettings';
+import { LayoutDashboard, Package, ShoppingCart, Users, LogOut, Image as ImageIcon } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export function AdminLayout() {
-  const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'customers'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'customers' | 'settings'>('products');
   const { logout } = useAuth();
 
   return (
-    <div className="min-h-screen bg-dark-900 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-dark-900 flex flex-col md:flex-row cursor-auto">
       {/* Sidebar */}
       <aside className="w-full md:w-64 bg-dark-800 border-r border-white/5 flex flex-col">
         <div className="p-6 border-b border-white/5">
@@ -56,6 +57,18 @@ export function AdminLayout() {
             <Users size={18} />
             Clientes
           </button>
+
+          <button 
+            onClick={() => setActiveTab('settings')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-sm text-sm font-medium transition-colors ${
+              activeTab === 'settings' 
+                ? 'bg-gold-500/10 text-gold-500 border border-gold-500/20' 
+                : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+            }`}
+          >
+            <ImageIcon size={18} />
+            Aparência do Site
+          </button>
         </nav>
 
         <div className="p-4 border-t border-white/5">
@@ -74,6 +87,7 @@ export function AdminLayout() {
         {activeTab === 'products' && <AdminProducts />}
         {activeTab === 'orders' && <AdminOrders />}
         {activeTab === 'customers' && <AdminCustomers />}
+        {activeTab === 'settings' && <AdminSettings />}
       </main>
     </div>
   );

@@ -4,15 +4,29 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { db, auth } from '../firebase';
 import { products as initialProducts, mockOrders, mockCustomers, Product, Order, Customer } from '../data/mock';
 
+export interface SiteSettings {
+  heroBgUrl: string;
+  experienceBgUrl: string;
+  craftsmanshipBgUrl: string;
+}
+
+const defaultSettings: SiteSettings = {
+  heroBgUrl: 'https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=2000',
+  experienceBgUrl: 'https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=1000',
+  craftsmanshipBgUrl: 'https://i.ibb.co/YBTGFJ4z/2423.png'
+};
+
 interface StoreContextType {
   products: Product[];
   orders: Order[];
   customers: Customer[];
+  siteSettings: SiteSettings;
   addProduct: (product: Omit<Product, 'id'>) => Promise<void>;
   updateProduct: (id: number, product: Partial<Product>) => Promise<void>;
   deleteProduct: (id: number) => Promise<void>;
   updateOrder: (id: string, order: Partial<Order>) => Promise<void>;
   deleteOrder: (id: string) => Promise<void>;
+  updateSiteSettings: (settings: Partial<SiteSettings>) => Promise<void>;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -23,6 +37,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [siteSettings, setSiteSettings] = useState<SiteSettings>(defaultSettings);
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
@@ -54,8 +69,20 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       // Ignore permission errors silently for public viewers if any
     });
 
+    // Listen to Site Settings (Public)
+    const unsubSettings = onSnapshot(doc(db, 'settings', 'general'), (docSnap) => {
+      if (docSnap.exists()) {
+        setSiteSettings({ ...defaultSettings, ...docSnap.data() } as SiteSettings);
+      } else {
+        setSiteSettings(defaultSettings);
+      }
+    }, (error) => {
+      // Ignore permission errors silently
+    });
+
     return () => {
       unsubProducts();
+      unsubSettings();
     };
   }, []);
 
@@ -171,8 +198,18 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const updateSiteSettings = async (settings: Partial<SiteSettings>) => {
+    try {
+      const settingsRef = doc(db, 'settings', 'general');
+      await setDoc(settingsRef, settings, { merge: true });
+    } catch (error) {
+      console.error("Error updating site settings:", error);
+      throw error;
+    }
+  };
+
   return (
-    <StoreContext.Provider value={{ products, orders, customers, addProduct, updateProduct, deleteProduct, updateOrder, deleteOrder }}>
+    <StoreContext.Provider value={{ products, orders, customers, siteSettings, addProduct, updateProduct, deleteProduct, updateOrder, deleteOrder, updateSiteSettings }}>
       {children}
     </StoreContext.Provider>
   );

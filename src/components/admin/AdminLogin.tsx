@@ -6,7 +6,7 @@ export function AdminLogin() {
   const { loginWithGoogle, user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-dark-900 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-dark-900 flex items-center justify-center px-4 cursor-auto">
       <div className="bg-dark-800 border border-white/5 p-8 rounded-sm max-w-md w-full text-center">
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-dark-900 border border-white/5 mb-6">
           <Lock size={32} className="text-gold-500" />

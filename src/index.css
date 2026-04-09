@@ -16,7 +16,6 @@
 
 body {
   @apply bg-dark-900 text-white font-sans antialiased;
-  cursor: none;
 }
 
 @media (pointer: coarse) {

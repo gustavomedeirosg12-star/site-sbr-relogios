@@ -20,6 +20,14 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Settings Collection
+    match /settings/{document=**} {
+      // Anyone can read settings
+      allow read: if true;
+      // Only admin can write settings
+      allow write: if isAdmin();
+    }
+
     // Orders Collection
     match /orders/{orderId} {
       // Anyone can get a specific order (for tracking page)

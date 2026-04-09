@@ -1,15 +1,18 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ChevronRight, Star } from 'lucide-react';
+import { useStore } from '../../context/StoreContext';
 
 export function Hero() {
+  const { siteSettings } = useStore();
+
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <div className="w-full h-full animate-slow-zoom">
           <img 
-            src="https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=2000" 
+            src={siteSettings.heroBgUrl} 
             alt="Luxury Watch Background" 
             className="w-full h-full object-cover opacity-40"
           />

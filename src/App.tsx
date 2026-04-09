@@ -29,7 +29,7 @@ import { PoliciesModal } from './components/ui/PoliciesModal';
 
 function Storefront() {
   return (
-    <div className="min-h-screen bg-dark-900 text-white font-sans selection:bg-gold-500 selection:text-dark-900 relative cursor-none md:cursor-auto">
+    <div className="min-h-screen bg-dark-900 text-white font-sans selection:bg-gold-500 selection:text-dark-900 relative cursor-none">
       <CustomCursor />
       <div className="noise-overlay"></div>
       <Navbar />
@@ -56,7 +56,7 @@ function Storefront() {
 
 function TrackingRoute() {
   return (
-    <div className="min-h-screen bg-dark-900 text-white font-sans selection:bg-gold-500 selection:text-dark-900 relative flex flex-col cursor-none md:cursor-auto">
+    <div className="min-h-screen bg-dark-900 text-white font-sans selection:bg-gold-500 selection:text-dark-900 relative flex flex-col cursor-none">
       <CustomCursor />
       <div className="noise-overlay"></div>
       <Navbar />

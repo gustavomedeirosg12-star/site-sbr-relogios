@@ -1,8 +1,10 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
+import { useStore } from '../../context/StoreContext';
 
 export function Craftsmanship() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { siteSettings } = useStore();
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -38,7 +40,7 @@ export function Craftsmanship() {
           <div className="absolute inset-0 bg-gradient-to-b from-dark-900 via-dark-900/20 to-dark-900 z-10"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-dark-900 via-transparent to-dark-900 z-10"></div>
           <img 
-            src="https://i.ibb.co/YBTGFJ4z/2423.png" 
+            src={siteSettings.craftsmanshipBgUrl} 
             alt="Rolex Craftsmanship" 
             className="w-full h-full object-cover object-center"
             referrerPolicy="no-referrer"

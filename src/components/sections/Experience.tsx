@@ -1,8 +1,11 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Package, Shield, Star } from 'lucide-react';
+import { useStore } from '../../context/StoreContext';
 
 export function Experience() {
+  const { siteSettings } = useStore();
+
   return (
     <section className="py-24 bg-dark-900 relative overflow-hidden">
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-5 pointer-events-none"></div>
@@ -25,7 +28,7 @@ export function Experience() {
             className="relative aspect-square md:aspect-[4/3] rounded-sm overflow-hidden border border-white/10 group"
           >
             <img 
-              src="https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=1000" 
+              src={siteSettings.experienceBgUrl} 
               alt="Unboxing Experience" 
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
             />
