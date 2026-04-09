@@ -41,12 +41,14 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Listen to Products (Public)
-    const qProducts = query(collection(db, 'products'), orderBy('order', 'asc'));
+    const qProducts = query(collection(db, 'products'));
     const unsubProducts = onSnapshot(qProducts, (snapshot) => {
       const prods: Product[] = [];
       snapshot.forEach((doc) => {
         prods.push({ id: Number(doc.id), ...doc.data() } as Product);
       });
+      // Sort in memory to avoid missing products that don't have the 'order' field yet
+      prods.sort((a, b) => (a.order || 0) - (b.order || 0));
       setProducts(prods);
     }, (error) => {
       // Ignore permission errors silently for public viewers if any

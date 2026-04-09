@@ -315,7 +315,16 @@ export function AdminProducts() {
                 <div className="space-y-4">
                   {/* Main Image */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Imagem Principal</label>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Imagem Principal (URL ou Upload)</label>
+                    <div className="flex gap-2 mb-3">
+                      <input 
+                        type="url" 
+                        placeholder="Cole o link do Imgur/IMGBB aqui..."
+                        value={formData.image}
+                        onChange={e => setFormData({...formData, image: e.target.value})}
+                        className="flex-1 bg-dark-900 border border-white/10 rounded-sm px-4 py-2.5 text-white focus:outline-none focus:border-gold-500 text-sm"
+                      />
+                    </div>
                     {formData.image && (
                       <div className="mb-3 relative w-full aspect-video rounded-sm overflow-hidden border border-white/10 bg-dark-900">
                         <img src={formData.image} alt="Preview" className="w-full h-full object-contain" />
@@ -340,10 +349,10 @@ export function AdminProducts() {
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
                         disabled={isUploading}
-                        className="w-full bg-dark-900 border border-white/10 hover:border-gold-500 text-gray-300 hover:text-gold-500 px-4 py-2.5 rounded-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full bg-dark-900 border border-white/10 hover:border-gold-500 text-gray-300 hover:text-gold-500 px-4 py-2.5 rounded-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                       >
                         {isUploading ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
-                        <span>{formData.image ? 'Trocar Imagem Principal' : 'Upload Imagem Principal'}</span>
+                        <span>Fazer Upload de Arquivo</span>
                       </button>
                     </div>
                   </div>
@@ -351,10 +360,42 @@ export function AdminProducts() {
                   {/* Gallery Images */}
                   <div className="pt-4 border-t border-white/10">
                     <label className="block text-sm font-medium text-gray-300 mb-2 flex items-center justify-between">
-                      <span>Galeria de Imagens</span>
+                      <span>Galeria de Imagens (URLs ou Upload)</span>
                       <span className="text-xs text-gray-500">{formData.gallery.length} imagens</span>
                     </label>
                     
+                    <div className="flex gap-2 mb-3">
+                      <input 
+                        type="url" 
+                        id="galleryUrlInput"
+                        placeholder="Cole o link e clique em +"
+                        className="flex-1 bg-dark-900 border border-white/10 rounded-sm px-4 py-2 text-white focus:outline-none focus:border-gold-500 text-sm"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const input = e.currentTarget;
+                            if (input.value) {
+                              setFormData(prev => ({ ...prev, gallery: [...prev.gallery, input.value] }));
+                              input.value = '';
+                            }
+                          }
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const input = document.getElementById('galleryUrlInput') as HTMLInputElement;
+                          if (input && input.value) {
+                            setFormData(prev => ({ ...prev, gallery: [...prev.gallery, input.value] }));
+                            input.value = '';
+                          }
+                        }}
+                        className="bg-gold-500 hover:bg-gold-600 text-dark-900 px-3 rounded-sm flex items-center justify-center transition-colors"
+                      >
+                        <Plus size={20} />
+                      </button>
+                    </div>
+
                     <div className="grid grid-cols-3 gap-2 mb-3">
                       {formData.gallery.map((img, idx) => (
                         <div key={idx} className="relative aspect-square rounded-sm overflow-hidden border border-white/10 bg-dark-900 group">
@@ -384,7 +425,7 @@ export function AdminProducts() {
                         className="aspect-square flex flex-col items-center justify-center gap-2 bg-dark-900 border border-dashed border-white/20 hover:border-gold-500 text-gray-400 hover:text-gold-500 rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {isUploadingGallery ? <Loader2 size={20} className="animate-spin" /> : <ImagePlus size={20} />}
-                        <span className="text-xs text-center px-2">Adicionar<br/>Fotos</span>
+                        <span className="text-xs text-center px-2">Upload<br/>Fotos</span>
                       </button>
                     </div>
                   </div>
