@@ -52,7 +52,7 @@ export function Craftsmanship() {
           
           {/* Feature 1 */}
           <motion.div 
-            className="absolute top-1/2 left-4 md:left-12 -translate-y-1/2 max-w-lg"
+            className="absolute top-1/2 left-4 right-4 md:right-auto md:left-12 -translate-y-1/2 md:max-w-lg"
             style={{ opacity: text1Opacity, y: text1Y }}
           >
             <span className="text-gold-500 font-bold tracking-widest uppercase text-sm mb-4 block">A Arte do Tempo</span>
@@ -66,7 +66,7 @@ export function Craftsmanship() {
 
           {/* Feature 2 */}
           <motion.div 
-            className="absolute top-1/2 right-4 md:right-12 -translate-y-1/2 max-w-lg text-right"
+            className="absolute top-1/2 left-4 right-4 md:left-auto md:right-12 -translate-y-1/2 md:max-w-lg text-right"
             style={{ opacity: text2Opacity, y: text2Y }}
           >
             <span className="text-gold-500 font-bold tracking-widest uppercase text-sm mb-4 block">Resistência Absoluta</span>
