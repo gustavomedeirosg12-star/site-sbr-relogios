@@ -16,6 +16,28 @@
 
 body {
   @apply bg-dark-900 text-white font-sans antialiased;
+  cursor: none;
+}
+
+@media (pointer: coarse) {
+  body {
+    cursor: auto;
+  }
+}
+
+/* Custom Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-dark-900;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-dark-800 border border-white/10 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gold-500/50;
 }
 
 /* Custom Luxury Animations */

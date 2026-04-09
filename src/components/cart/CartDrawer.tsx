@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Minus, Plus, Trash2, ArrowRight, ArrowLeft } from 'lucide-react';
+import { X, Minus, Plus, Trash2, ArrowRight, ArrowLeft, ShieldCheck, Truck, Award } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
 type CheckoutStep = 'cart' | 'checkout';
@@ -247,6 +247,22 @@ export function CartDrawer() {
                     </button>
                   </div>
                 )}
+
+                {/* Trust Badges */}
+                <div className="mt-6 grid grid-cols-3 gap-2 border-t border-white/5 pt-6">
+                  <div className="flex flex-col items-center text-center gap-2">
+                    <ShieldCheck size={24} className="text-gold-500" />
+                    <span className="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Compra<br/>Segura</span>
+                  </div>
+                  <div className="flex flex-col items-center text-center gap-2">
+                    <Award size={24} className="text-gold-500" />
+                    <span className="text-[10px] text-gray-400 uppercase tracking-wider font-medium">1 Ano<br/>Garantia</span>
+                  </div>
+                  <div className="flex flex-col items-center text-center gap-2">
+                    <Truck size={24} className="text-gold-500" />
+                    <span className="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Frete<br/>Expresso</span>
+                  </div>
+                </div>
               </div>
             )}
           </motion.div>

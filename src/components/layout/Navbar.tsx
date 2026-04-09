@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ShoppingBag } from 'lucide-react';
+import { Menu, X, ShoppingBag, Search } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import { SearchModal } from '../ui/SearchModal';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { items, setIsCartOpen } = useCart();
 
@@ -55,6 +57,21 @@ export function Navbar() {
               Dúvidas
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-gold-500 transition-all duration-300 group-hover:w-full"></span>
             </a>
+            <a href="#/rastreio" className="text-gold-500 hover:text-gold-400 transition-colors text-sm uppercase tracking-widest relative group">
+              Rastrear Pedido
+              <span className="absolute -bottom-1 left-0 w-0 h-px bg-gold-500 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            
+            <div className="w-px h-4 bg-white/20 mx-2"></div>
+            
+            <button 
+              onClick={() => setIsSearchOpen(true)}
+              className="text-gray-300 hover:text-gold-500 transition-colors"
+              title="Pesquisar"
+            >
+              <Search size={20} />
+            </button>
+
             <button 
               onClick={() => setIsCartOpen(true)}
               className="hover-shine bg-gold-500 hover:bg-gold-400 text-dark-900 px-6 py-2.5 rounded-sm font-bold transition-all duration-300 flex items-center gap-2 shadow-[0_0_15px_rgba(212,175,55,0.2)] hover:shadow-[0_0_25px_rgba(212,175,55,0.4)] hover:-translate-y-0.5"
@@ -65,6 +82,12 @@ export function Navbar() {
           </div>
 
           <div className="md:hidden flex items-center gap-4">
+            <button 
+              onClick={() => setIsSearchOpen(true)}
+              className="text-gray-300 hover:text-gold-500 transition-colors"
+            >
+              <Search size={22} />
+            </button>
             <button 
               onClick={() => setIsCartOpen(true)}
               className="text-gold-500 relative"
@@ -89,9 +112,12 @@ export function Navbar() {
             <a href="#categorias" onClick={() => setIsOpen(false)} className="block text-gray-300 hover:text-gold-500 uppercase text-sm tracking-widest font-medium">Categorias</a>
             <a href="#catalogo" onClick={() => setIsOpen(false)} className="block text-gray-300 hover:text-gold-500 uppercase text-sm tracking-widest font-medium">Catálogo</a>
             <a href="#faq" onClick={() => setIsOpen(false)} className="block text-gray-300 hover:text-gold-500 uppercase text-sm tracking-widest font-medium">Dúvidas</a>
+            <a href="#/rastreio" onClick={() => setIsOpen(false)} className="block text-gold-500 hover:text-gold-400 uppercase text-sm tracking-widest font-medium">Rastrear Pedido</a>
           </div>
         </div>
       )}
+      
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </nav>
   );
 }

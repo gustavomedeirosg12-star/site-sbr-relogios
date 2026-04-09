@@ -22,8 +22,10 @@ service cloud.firestore {
 
     // Orders Collection
     match /orders/{orderId} {
-      // Only admin can read and write orders
-      allow read, write: if isAdmin();
+      // Anyone can get a specific order (for tracking page)
+      allow get: if true;
+      // Only admin can list all orders or write
+      allow list, write: if isAdmin();
     }
 
     // Customers Collection

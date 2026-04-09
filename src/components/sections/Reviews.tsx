@@ -1,30 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Star, CheckCircle } from 'lucide-react';
-
-const reviews = [
-  {
-    id: 1,
-    name: 'Marcelo F.',
-    text: 'Qualidade impressionante. O peso e o acabamento do Superclone são idênticos ao original. Chegou em 2 dias via Sedex.',
-    product: 'Daytona Panda',
-    initials: 'MF'
-  },
-  {
-    id: 2,
-    name: 'Ricardo S.',
-    text: 'Atendimento impecável via WhatsApp. Tiraram todas as minhas dúvidas e o relógio superou as expectativas. Aço 904L de verdade.',
-    product: 'Submariner Date',
-    initials: 'RS'
-  },
-  {
-    id: 3,
-    name: 'Thiago A.',
-    text: 'Comprei a linha intermediária para testar e já estou planejando o próximo. Custo-benefício excelente para o dia a dia.',
-    product: 'Datejust 41mm',
-    initials: 'TA'
-  }
-];
+import { reviews } from '../../data/mock';
 
 export function Reviews() {
   return (
@@ -46,30 +23,43 @@ export function Reviews() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-dark-800 p-8 rounded-sm border border-white/5 relative"
+              className="bg-dark-800 rounded-sm border border-white/5 relative overflow-hidden group"
             >
-              <div className="flex items-center gap-1 text-gold-500 mb-6">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={18} fill="currentColor" />
-                ))}
-              </div>
-              
-              <p className="text-gray-300 mb-8 italic leading-relaxed">
-                "{review.text}"
-              </p>
-              
-              <div className="flex items-center gap-4 mt-auto">
-                <div className="w-12 h-12 rounded-full bg-dark-900 border border-white/10 flex items-center justify-center text-gold-500 font-serif font-bold">
-                  {review.initials}
+              {review.productImage && (
+                <div className="w-full h-64 overflow-hidden relative">
+                  <img 
+                    src={review.productImage} 
+                    alt={`Relógio recebido por ${review.name}`} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-dark-800 via-dark-800/20 to-transparent"></div>
                 </div>
-                <div>
-                  <h4 className="text-white font-medium flex items-center gap-2">
-                    {review.name}
-                    <CheckCircle size={14} className="text-green-500" />
-                  </h4>
-                  <span className="text-gray-500 text-xs uppercase tracking-wider">
-                    Comprou: {review.product}
-                  </span>
+              )}
+              
+              <div className={`p-8 ${review.productImage ? 'pt-0 relative z-10 -mt-10' : ''}`}>
+                <div className="flex items-center gap-1 text-gold-500 mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={16} fill="currentColor" />
+                  ))}
+                </div>
+                
+                <p className="text-gray-300 mb-6 italic leading-relaxed text-sm">
+                  "{review.text}"
+                </p>
+                
+                <div className="flex items-center gap-4 mt-auto pt-4 border-t border-white/5">
+                  <div className="w-10 h-10 rounded-full bg-dark-900 border border-white/10 flex items-center justify-center text-gold-500 font-serif font-bold text-sm">
+                    {review.initials}
+                  </div>
+                  <div>
+                    <h4 className="text-white font-medium flex items-center gap-1.5 text-sm">
+                      {review.name}
+                      <CheckCircle size={14} className="text-green-500" />
+                    </h4>
+                    <span className="text-gray-500 text-xs uppercase tracking-wider">
+                      Comprou: {review.product}
+                    </span>
+                  </div>
                 </div>
               </div>
             </motion.div>

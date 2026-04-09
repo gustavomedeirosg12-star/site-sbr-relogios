@@ -13,7 +13,9 @@ import { Catalog } from './components/sections/Catalog';
 import { Trust } from './components/sections/Trust';
 import { Reviews } from './components/sections/Reviews';
 import { FAQ } from './components/sections/FAQ';
+import { Tracking } from './components/sections/Tracking';
 import { WhatsAppButton } from './components/ui/WhatsAppButton';
+import { CustomCursor } from './components/ui/CustomCursor';
 import { CartProvider } from './context/CartContext';
 import { CartDrawer } from './components/cart/CartDrawer';
 import { StoreProvider } from './context/StoreContext';
@@ -25,7 +27,8 @@ const AdminLogin = lazy(() => import('./components/admin/AdminLogin').then(m => 
 
 function Storefront() {
   return (
-    <div className="min-h-screen bg-dark-900 text-white font-sans selection:bg-gold-500 selection:text-dark-900 relative">
+    <div className="min-h-screen bg-dark-900 text-white font-sans selection:bg-gold-500 selection:text-dark-900 relative cursor-none md:cursor-auto">
+      <CustomCursor />
       <div className="noise-overlay"></div>
       <Navbar />
       <CartDrawer />
@@ -38,6 +41,24 @@ function Storefront() {
         <Catalog />
         <Reviews />
         <FAQ />
+      </main>
+
+      <Footer />
+      <WhatsAppButton />
+    </div>
+  );
+}
+
+function TrackingRoute() {
+  return (
+    <div className="min-h-screen bg-dark-900 text-white font-sans selection:bg-gold-500 selection:text-dark-900 relative flex flex-col cursor-none md:cursor-auto">
+      <CustomCursor />
+      <div className="noise-overlay"></div>
+      <Navbar />
+      <CartDrawer />
+      
+      <main className="flex-1">
+        <Tracking />
       </main>
 
       <Footer />
@@ -73,7 +94,13 @@ export default function App() {
 
   useEffect(() => {
     const checkHash = () => {
-      setCurrentRoute(window.location.hash === '#/admin' ? 'admin' : 'store');
+      if (window.location.hash === '#/admin') {
+        setCurrentRoute('admin');
+      } else if (window.location.hash === '#/rastreio') {
+        setCurrentRoute('tracking');
+      } else {
+        setCurrentRoute('store');
+      }
     };
     
     checkHash();
@@ -85,7 +112,7 @@ export default function App() {
     <AuthProvider>
       <StoreProvider>
         <CartProvider>
-          {currentRoute === 'admin' ? <AdminRoute /> : <Storefront />}
+          {currentRoute === 'admin' ? <AdminRoute /> : currentRoute === 'tracking' ? <TrackingRoute /> : <Storefront />}
         </CartProvider>
       </StoreProvider>
     </AuthProvider>

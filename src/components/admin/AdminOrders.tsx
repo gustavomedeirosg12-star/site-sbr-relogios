@@ -7,6 +7,7 @@ export function AdminOrders() {
   const { orders, updateOrder, deleteOrder } = useStore();
   const [editingOrder, setEditingOrder] = useState<Order | null>(null);
   const [status, setStatus] = useState('');
+  const [trackingCode, setTrackingCode] = useState('');
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -20,11 +21,12 @@ export function AdminOrders() {
   const handleEdit = (order: Order) => {
     setEditingOrder(order);
     setStatus(order.status);
+    setTrackingCode(order.trackingCode || '');
   };
 
   const handleSave = () => {
     if (editingOrder) {
-      updateOrder(editingOrder.id, { status });
+      updateOrder(editingOrder.id, { status, trackingCode });
       setEditingOrder(null);
     }
   };
@@ -159,6 +161,20 @@ export function AdminOrders() {
                   <option value="Cancelado">Cancelado</option>
                 </select>
               </div>
+
+              {status === 'Enviado' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">Código de Rastreio (Correios/Transportadora)</label>
+                  <input 
+                    type="text"
+                    value={trackingCode}
+                    onChange={e => setTrackingCode(e.target.value)}
+                    placeholder="Ex: NL123456789BR"
+                    className="w-full bg-dark-900 border border-white/10 rounded-sm px-4 py-2.5 text-white focus:outline-none focus:border-gold-500"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Este código será exibido para o cliente na página de rastreio.</p>
+                </div>
+              )}
 
               <div className="pt-6 flex justify-end gap-3">
                 <button 

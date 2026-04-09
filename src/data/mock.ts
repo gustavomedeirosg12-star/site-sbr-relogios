@@ -1,9 +1,12 @@
 export interface Product {
   id: number;
   name: string;
+  brand: string;
   category: string;
   price: number;
   image: string;
+  gallery?: string[];
+  videoUrl?: string;
   featured: boolean;
   order: number;
 }
@@ -13,9 +16,10 @@ export interface Order {
   customerName: string;
   date: string;
   total: number;
-  status: 'Pendente' | 'Pago' | 'Enviado';
+  status: 'Pendente' | 'Pago' | 'Enviado' | 'Cancelado';
   paymentMethod: 'PIX' | 'Cartão';
   items: { name: string; quantity: number }[];
+  trackingCode?: string;
 }
 
 export interface Customer {
@@ -30,28 +34,22 @@ export interface Customer {
 
 export const categories = [
   {
+    id: 'superclone',
+    name: 'Super Clone',
+    description: 'A réplica perfeita (1:1). Construção em aço inoxidável maciço, vidro de Safira e maquinário idêntico ao original.',
+    image: 'https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&q=80&w=800',
+  },
+  {
     id: 'premium',
     name: 'Premium',
-    description: 'Aço 904L - O mais alto padrão de qualidade e acabamento.',
+    description: 'Excelente acabamento com maquinário Citizen, vidro em cristal mineral e material com tratamento especial antiferrugem.',
     image: 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&q=80&w=800',
   },
   {
-    id: 'intermediario',
-    name: 'Intermediário',
-    description: 'Aço Inox/Cirúrgico - Excelente custo-benefício e durabilidade.',
-    image: 'https://images.unsplash.com/photo-1548171915-e76a3a4111f5?auto=format&fit=crop&q=80&w=800',
-  },
-  {
-    id: 'entrada',
-    name: 'Entrada',
-    description: 'Aço Comum - Modelos acessíveis com ótimo visual.',
-    image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=800',
-  },
-  {
-    id: 'superclone',
-    name: 'Superclone',
-    description: 'Réplicas perfeitas 1:1 com maquinário suíço.',
-    image: 'https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&q=80&w=800',
+    id: 'aco316l',
+    name: 'Aço Cirúrgico 316L',
+    description: 'Durabilidade extrema. Peças em aço 316L ou metal inoxidável de alta resistência que não perdem a cor.',
+    image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=800',
   },
 ];
 
@@ -59,54 +57,72 @@ export const products: Product[] = [
   {
     id: 1,
     name: 'Submariner Date Black',
-    category: 'Premium (Aço 904)',
+    brand: 'Rolex',
+    category: 'Super Clone',
     price: 4500.00,
     image: 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&q=80&w=800',
+    gallery: [],
+    videoUrl: '',
     featured: true,
     order: 1,
   },
   {
     id: 2,
     name: 'Daytona Panda',
-    category: 'Superclone',
+    brand: 'Rolex',
+    category: 'Super Clone',
     price: 6800.00,
     image: 'https://images.unsplash.com/photo-1548171915-e76a3a4111f5?auto=format&fit=crop&q=80&w=800',
+    gallery: [],
+    videoUrl: '',
     featured: true,
     order: 2,
   },
   {
     id: 3,
     name: 'Datejust 41mm Silver',
-    category: 'Intermediário',
+    brand: 'Rolex',
+    category: 'Aço Cirúrgico 316L',
     price: 2100.00,
     image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=800',
+    gallery: [],
+    videoUrl: '',
     featured: false,
     order: 3,
   },
   {
     id: 4,
     name: 'Nautilus Blue Dial',
-    category: 'Premium (Aço 904)',
+    brand: 'Patek Philippe',
+    category: 'Premium',
     price: 5200.00,
     image: 'https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&q=80&w=800',
+    gallery: [],
+    videoUrl: '',
     featured: true,
     order: 4,
   },
   {
     id: 5,
     name: 'Royal Oak Offshore',
-    category: 'Superclone',
+    brand: 'Audemars Piguet',
+    category: 'Super Clone',
     price: 7100.00,
     image: 'https://images.unsplash.com/photo-1587836374828-cb4387df3eb7?auto=format&fit=crop&q=80&w=800',
+    gallery: [],
+    videoUrl: '',
     featured: false,
     order: 5,
   },
   {
     id: 6,
     name: 'Seamaster Diver 300M',
-    category: 'Entrada',
+    brand: 'Omega',
+    category: 'Aço Cirúrgico 316L',
     price: 1200.00,
     image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=800',
+    gallery: [],
+    videoUrl: '',
     featured: false,
     order: 6,
   },
@@ -141,7 +157,8 @@ export const mockOrders: Order[] = [
     items: [
       { name: 'Datejust 41mm Silver', quantity: 1 },
       { name: 'Seamaster Diver 300M', quantity: 1 }
-    ]
+    ],
+    trackingCode: 'NL123456789BR'
   }
 ];
 
@@ -175,6 +192,32 @@ export const mockCustomers: Customer[] = [
   }
 ];
 
+export const reviews = [
+  {
+    id: 1,
+    name: 'Marcelo F.',
+    text: 'Qualidade impressionante. O peso e o acabamento do Superclone são idênticos ao original. Chegou em 2 dias via Sedex.',
+    product: 'Daytona Panda',
+    initials: 'MF',
+    productImage: 'https://images.unsplash.com/photo-1548171915-e76a3a4111f5?auto=format&fit=crop&q=80&w=800'
+  },
+  {
+    id: 2,
+    name: 'Ricardo S.',
+    text: 'Atendimento impecável via WhatsApp. Tiraram todas as minhas dúvidas e o relógio superou as expectativas. Aço 904L de verdade.',
+    product: 'Submariner Date',
+    initials: 'RS',
+    productImage: 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&q=80&w=800'
+  },
+  {
+    id: 3,
+    name: 'Thiago A.',
+    text: 'Comprei a linha intermediária para testar e já estou planejando o próximo. Custo-benefício excelente para o dia a dia.',
+    product: 'Datejust 41mm',
+    initials: 'TA',
+    productImage: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=800'
+  }
+];
 export const faqs = [
   {
     question: 'Qual a qualidade dos produtos?',
