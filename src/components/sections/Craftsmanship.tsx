@@ -11,7 +11,7 @@ export function Craftsmanship() {
 
   // Animations for the background image
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.5, 2]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8, 1], [0.6, 0.3, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8, 1], [0.8, 0.4, 0]);
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
 
   // Text 1: Maquinário
@@ -33,15 +33,15 @@ export function Craftsmanship() {
         {/* Background Image that scales and moves */}
         <motion.div 
           className="absolute inset-0 w-full h-full"
-          style={{ scale, y }}
+          style={{ scale, y, opacity }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-dark-900 via-transparent to-dark-900 z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-dark-900 via-dark-900/20 to-dark-900 z-10"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-dark-900 via-transparent to-dark-900 z-10"></div>
-          <motion.img 
-            src="https://images.unsplash.com/photo-1587836374828-cb4387df3eb7?auto=format&fit=crop&q=80&w=2000" 
-            alt="Watch Craftsmanship" 
+          <img 
+            src="https://i.ibb.co/YBTGFJ4z/2423.png" 
+            alt="Rolex Craftsmanship" 
             className="w-full h-full object-cover object-center"
-            style={{ opacity }}
+            referrerPolicy="no-referrer"
           />
         </motion.div>
 

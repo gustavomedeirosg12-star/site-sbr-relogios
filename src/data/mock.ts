@@ -220,23 +220,46 @@ export const reviews = [
 ];
 export const faqs = [
   {
-    question: 'Qual a qualidade dos produtos?',
-    answer: 'Trabalhamos com diferentes linhas para atender a todos os públicos. Desde a linha de Entrada até os Superclones 1:1, que possuem maquinário suíço e materiais idênticos aos originais, como o Aço 904L e vidro de safira.',
+    category: 'Produtos e Qualidade',
+    items: [
+      {
+        question: 'Qual a qualidade dos produtos?',
+        answer: 'Trabalhamos com diferentes linhas para atender a todos os públicos. Desde a linha de Entrada até os Superclones 1:1, que possuem maquinário suíço e materiais idênticos aos originais, como o Aço 904L e vidro de safira.',
+      },
+      {
+        question: 'Os relógios possuem garantia?',
+        answer: 'Sim! Todos os nossos relógios possuem garantia de maquinário. A linha Premium e Superclone contam com 1 ano de garantia total contra defeitos de fabricação.',
+      },
+    ]
   },
   {
-    question: 'Quais são as formas de pagamento?',
-    answer: 'Aceitamos PIX com 5% de desconto, e parcelamento em até 12x no cartão de crédito. Todo o processo de pagamento é 100% seguro.',
+    category: 'Pagamento e Envio',
+    items: [
+      {
+        question: 'Quais são as formas de pagamento?',
+        answer: 'Aceitamos PIX com 5% de desconto, e parcelamento em até 12x no cartão de crédito. Todo o processo de pagamento é 100% seguro.',
+      },
+      {
+        question: 'Como funciona o envio?',
+        answer: 'Oferecemos frete grátis para todo o Brasil via Sedex. Após a confirmação do pagamento, o código de rastreio é enviado diretamente no seu WhatsApp em até 24 horas úteis.',
+      },
+    ]
   },
   {
-    question: 'Os relógios possuem garantia?',
-    answer: 'Sim! Todos os nossos relógios possuem garantia de maquinário. A linha Premium e Superclone contam com 1 ano de garantia total contra defeitos de fabricação.',
-  },
-  {
-    question: 'Como funciona o envio?',
-    answer: 'Oferecemos frete grátis para todo o Brasil via Sedex. Após a confirmação do pagamento, o código de rastreio é enviado diretamente no seu WhatsApp em até 24 horas úteis.',
-  },
-  {
-    question: 'Os depoimentos no site são reais?',
-    answer: 'Os depoimentos exibidos no site são ilustrações baseadas em relatos e feedbacks reais de clientes da nossa operação, preservando a identidade dos mesmos por questões de privacidade e segurança.',
-  },
+    category: 'Outros',
+    items: [
+      {
+        question: 'Os relógios são à prova d\'água?',
+        answer: 'Sim. Nossas linhas Premium e Superclone possuem vedação completa, permitindo uso em piscinas e mar (até 50m de profundidade). Recomendamos apenas evitar banhos quentes devido ao vapor.',
+      },
+      {
+        question: 'Vocês enviam na caixa original?',
+        answer: 'Os relógios acompanham um estojo de luxo padrão da nossa loja. A caixa original da marca, com manuais e certificados, pode ser adquirida separadamente.',
+      },
+      {
+        question: 'O maquinário é automático ou a bateria?',
+        answer: 'Depende do modelo. A grande maioria dos nossos relógios de luxo (Rolex, Patek, AP) possui maquinário automático de alta precisão, sem necessidade de bateria. Apenas modelos específicos (como alguns femininos ou cronógrafos específicos) usam maquinário Quartz.',
+      }
+    ]
+  }
 ];

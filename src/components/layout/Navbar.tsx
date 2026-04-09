@@ -45,31 +45,31 @@ export function Navbar() {
           </div>
           
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#categorias" className="text-gray-300 hover:text-gold-500 transition-colors text-sm uppercase tracking-widest relative group">
+            <a href="#categorias" className="text-gray-400 hover:text-white transition-colors text-xs uppercase tracking-[0.2em] relative group">
               Categorias
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-gold-500 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-[1px] bg-gold-500 transition-all duration-300 group-hover:w-full"></span>
             </a>
-            <a href="#catalogo" className="text-gray-300 hover:text-gold-500 transition-colors text-sm uppercase tracking-widest relative group">
+            <a href="#catalogo" className="text-gray-400 hover:text-white transition-colors text-xs uppercase tracking-[0.2em] relative group">
               Catálogo
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-gold-500 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-[1px] bg-gold-500 transition-all duration-300 group-hover:w-full"></span>
             </a>
-            <a href="#faq" className="text-gray-300 hover:text-gold-500 transition-colors text-sm uppercase tracking-widest relative group">
+            <a href="#faq" className="text-gray-400 hover:text-white transition-colors text-xs uppercase tracking-[0.2em] relative group">
               Dúvidas
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-gold-500 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-[1px] bg-gold-500 transition-all duration-300 group-hover:w-full"></span>
             </a>
-            <a href="#/rastreio" className="text-gold-500 hover:text-gold-400 transition-colors text-sm uppercase tracking-widest relative group">
+            <a href="#/rastreio" className="text-gray-400 hover:text-white transition-colors text-xs uppercase tracking-[0.2em] relative group">
               Rastrear Pedido
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-gold-500 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-[1px] bg-gold-500 transition-all duration-300 group-hover:w-full"></span>
             </a>
             
-            <div className="w-px h-4 bg-white/20 mx-2"></div>
+            <div className="w-px h-4 bg-white/10 mx-2"></div>
             
             <button 
               onClick={() => setIsSearchOpen(true)}
-              className="text-gray-300 hover:text-gold-500 transition-colors"
+              className="text-gray-400 hover:text-white transition-colors"
               title="Pesquisar"
             >
-              <Search size={20} />
+              <Search size={18} strokeWidth={1.5} />
             </button>
 
             <button 
@@ -77,7 +77,7 @@ export function Navbar() {
               className="hover-shine bg-gold-500 hover:bg-gold-400 text-dark-900 px-6 py-2.5 rounded-sm font-bold transition-all duration-300 flex items-center gap-2 shadow-[0_0_15px_rgba(212,175,55,0.2)] hover:shadow-[0_0_25px_rgba(212,175,55,0.4)] hover:-translate-y-0.5"
             >
               <ShoppingBag size={18} />
-              <span>Carrinho {cartItemsCount > 0 && `(${cartItemsCount})`}</span>
+              <span className="text-xs uppercase tracking-wider">Carrinho {cartItemsCount > 0 && `(${cartItemsCount})`}</span>
             </button>
           </div>
 
