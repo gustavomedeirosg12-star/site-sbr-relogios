@@ -30,10 +30,9 @@ export function Footer() {
           <div>
             <h3 className="text-white font-medium mb-4 uppercase tracking-widest text-sm">Políticas</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-gold-500 text-sm transition-colors">Trocas e Devoluções</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-gold-500 text-sm transition-colors">Termos de Garantia</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-gold-500 text-sm transition-colors">Política de Privacidade</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-gold-500 text-sm transition-colors">Prazos de Entrega</a></li>
+              <li><button onClick={() => window.dispatchEvent(new Event('openPolicies'))} className="text-gray-400 hover:text-gold-500 text-sm transition-colors text-left">Termos de Compra e Garantia</button></li>
+              <li><button onClick={() => window.dispatchEvent(new Event('openPolicies'))} className="text-gray-400 hover:text-gold-500 text-sm transition-colors text-left">Prazos de Entrega</button></li>
+              <li><button onClick={() => window.dispatchEvent(new Event('openPolicies'))} className="text-gray-400 hover:text-gold-500 text-sm transition-colors text-left">Trocas e Devoluções</button></li>
             </ul>
           </div>
           <div>

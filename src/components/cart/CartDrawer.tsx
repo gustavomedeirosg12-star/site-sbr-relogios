@@ -236,6 +236,15 @@ export function CartDrawer() {
                   </div>
                 ) : (
                   <div className="space-y-3">
+                    <p className="text-xs text-gray-500 text-center mb-2">
+                      Ao finalizar, você concorda com nossos{' '}
+                      <button 
+                        onClick={() => window.dispatchEvent(new Event('openPolicies'))}
+                        className="text-gold-500 underline hover:text-gold-400"
+                      >
+                        Termos de Compra e Garantia
+                      </button>
+                    </p>
                     <button
                       onClick={handleWhatsAppCheckout}
                       disabled={!name || !paymentMethod}

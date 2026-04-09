@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { Hero } from './components/sections/Hero';
@@ -23,10 +23,9 @@ import { CartProvider } from './context/CartContext';
 import { CartDrawer } from './components/cart/CartDrawer';
 import { StoreProvider } from './context/StoreContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
-
-// Lazy load admin components to optimize main bundle size
-const AdminLayout = lazy(() => import('./components/admin/AdminLayout').then(m => ({ default: m.AdminLayout })));
-const AdminLogin = lazy(() => import('./components/admin/AdminLogin').then(m => ({ default: m.AdminLogin })));
+import { AdminLayout } from './components/admin/AdminLayout';
+import { AdminLogin } from './components/admin/AdminLogin';
+import { PoliciesModal } from './components/ui/PoliciesModal';
 
 function Storefront() {
   return (
@@ -82,18 +81,10 @@ function AdminRoute() {
   }
 
   if (!isAdmin) {
-    return (
-      <Suspense fallback={<div className="min-h-screen bg-dark-900 flex items-center justify-center text-gold-500">Carregando...</div>}>
-        <AdminLogin />
-      </Suspense>
-    );
+    return <AdminLogin />;
   }
 
-  return (
-    <Suspense fallback={<div className="min-h-screen bg-dark-900 flex items-center justify-center text-gold-500">Carregando...</div>}>
-      <AdminLayout />
-    </Suspense>
-  );
+  return <AdminLayout />;
 }
 
 export default function App() {
@@ -120,6 +111,7 @@ export default function App() {
       <StoreProvider>
         <CartProvider>
           {currentRoute === 'admin' ? <AdminRoute /> : currentRoute === 'tracking' ? <TrackingRoute /> : <Storefront />}
+          <PoliciesModal />
         </CartProvider>
       </StoreProvider>
     </AuthProvider>
