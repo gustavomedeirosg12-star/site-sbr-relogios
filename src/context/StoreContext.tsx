@@ -34,6 +34,7 @@ interface StoreContextType {
   updateOrder: (id: string, order: Partial<Order>) => Promise<void>;
   deleteOrder: (id: string) => Promise<void>;
   addReview: (review: Omit<Review, 'id'>) => Promise<void>;
+  updateReview: (id: number, review: Partial<Review>) => Promise<void>;
   deleteReview: (id: number) => Promise<void>;
   updateSiteSettings: (settings: Partial<SiteSettings>) => Promise<void>;
 }
@@ -238,6 +239,15 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const updateReview = async (id: number, updatedReview: Partial<Review>) => {
+    try {
+      await updateDoc(doc(db, 'reviews', id.toString()), updatedReview);
+    } catch (error) {
+      console.error("Error updating review:", error);
+      throw error;
+    }
+  };
+
   const deleteReview = async (id: number) => {
     try {
       await deleteDoc(doc(db, 'reviews', id.toString()));
@@ -258,7 +268,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <StoreContext.Provider value={{ products, orders, customers, reviews, siteSettings, addProduct, updateProduct, deleteProduct, updateOrder, deleteOrder, addReview, deleteReview, updateSiteSettings }}>
+    <StoreContext.Provider value={{ products, orders, customers, reviews, siteSettings, addProduct, updateProduct, deleteProduct, updateOrder, deleteOrder, addReview, updateReview, deleteReview, updateSiteSettings }}>
       {children}
     </StoreContext.Provider>
   );

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Star } from 'lucide-react';
+import { Plus, Trash2, Star, Edit2 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { ImageInput } from './ImageInput';
 
 export function AdminReviews() {
-  const { reviews, addReview, deleteReview } = useStore();
+  const { reviews, addReview, updateReview, deleteReview } = useStore();
   const [isAdding, setIsAdding] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
   const [newReview, setNewReview] = useState({
     name: '',
     text: '',
@@ -25,6 +26,35 @@ export function AdminReviews() {
     }
   };
 
+  const handleEditSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editingId === null) return;
+    try {
+      await updateReview(editingId, newReview);
+      setEditingId(null);
+      setNewReview({ name: '', text: '', product: '', initials: '', productImage: '' });
+    } catch (error) {
+      alert('Erro ao salvar depoimento.');
+    }
+  };
+
+  const startEdit = (review: any) => {
+    setNewReview({
+      name: review.name,
+      text: review.text,
+      product: review.product,
+      initials: review.initials,
+      productImage: review.productImage || ''
+    });
+    setEditingId(review.id);
+    setIsAdding(false);
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setNewReview({ name: '', text: '', product: '', initials: '', productImage: '' });
+  };
+
   const handleDelete = async (id: number) => {
     if (window.confirm('Tem certeza que deseja excluir este depoimento?')) {
       try {
@@ -40,7 +70,11 @@ export function AdminReviews() {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-serif font-bold text-white">Depoimentos</h2>
         <button
-          onClick={() => setIsAdding(true)}
+          onClick={() => {
+            setIsAdding(true);
+            setEditingId(null);
+            setNewReview({ name: '', text: '', product: '', initials: '', productImage: '' });
+          }}
           className="bg-gold-500 hover:bg-gold-600 text-dark-900 px-4 py-2 rounded-sm font-medium transition-colors flex items-center gap-2"
         >
           <Plus size={20} />
@@ -48,10 +82,12 @@ export function AdminReviews() {
         </button>
       </div>
 
-      {isAdding && (
+      {(isAdding || editingId !== null) && (
         <div className="bg-dark-800 border border-white/5 p-6 rounded-sm">
-          <h3 className="text-lg font-medium text-white mb-4">Adicionar Novo Depoimento</h3>
-          <form onSubmit={handleAdd} className="space-y-4">
+          <h3 className="text-lg font-medium text-white mb-4">
+            {editingId !== null ? 'Editar Depoimento' : 'Adicionar Novo Depoimento'}
+          </h3>
+          <form onSubmit={editingId !== null ? handleEditSave : handleAdd} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">Nome do Cliente</label>
@@ -94,6 +130,7 @@ export function AdminReviews() {
                   onChange={(val) => setNewReview({ ...newReview, productImage: val })}
                   placeholder="https://..."
                   folder="reviews"
+                  aspectRatio={1}
                 />
               </div>
             </div>
@@ -110,7 +147,7 @@ export function AdminReviews() {
             <div className="flex justify-end gap-3">
               <button
                 type="button"
-                onClick={() => setIsAdding(false)}
+                onClick={editingId !== null ? cancelEdit : () => setIsAdding(false)}
                 className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
               >
                 Cancelar
@@ -129,13 +166,22 @@ export function AdminReviews() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {reviews.map((review) => (
           <div key={review.id} className="bg-dark-800 border border-white/5 rounded-sm p-6 relative group">
-            <button
-              onClick={() => handleDelete(review.id)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"
-              title="Excluir"
-            >
-              <Trash2 size={18} />
-            </button>
+            <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
+              <button
+                onClick={() => startEdit(review)}
+                className="text-gray-500 hover:text-gold-500"
+                title="Editar"
+              >
+                <Edit2 size={18} />
+              </button>
+              <button
+                onClick={() => handleDelete(review.id)}
+                className="text-gray-500 hover:text-red-500"
+                title="Excluir"
+              >
+                <Trash2 size={18} />
+              </button>
+            </div>
             
             <div className="flex items-center gap-1 text-gold-500 mb-4">
               {[...Array(5)].map((_, i) => (

@@ -4,6 +4,7 @@ import { Product } from '../../data/mock';
 import { Edit2, Trash2, Plus, X, Upload, Loader2, ImagePlus } from 'lucide-react';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../firebase';
+import { ImageInput } from './ImageInput';
 
 export function AdminProducts() {
   const { products, addProduct, updateProduct, deleteProduct } = useStore();
@@ -316,45 +317,13 @@ export function AdminProducts() {
                   {/* Main Image */}
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Imagem Principal (URL ou Upload)</label>
-                    <div className="flex gap-2 mb-3">
-                      <input 
-                        type="url" 
-                        placeholder="Cole o link do Imgur/IMGBB aqui..."
-                        value={formData.image}
-                        onChange={e => setFormData({...formData, image: e.target.value})}
-                        className="flex-1 bg-dark-900 border border-white/10 rounded-sm px-4 py-2.5 text-white focus:outline-none focus:border-gold-500 text-sm"
-                      />
-                    </div>
-                    {formData.image && (
-                      <div className="mb-3 relative w-full aspect-video rounded-sm overflow-hidden border border-white/10 bg-dark-900">
-                        <img src={formData.image} alt="Preview" className="w-full h-full object-contain" />
-                        <button 
-                          type="button"
-                          onClick={() => setFormData({...formData, image: ''})}
-                          className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-sm hover:bg-red-600 transition-colors"
-                        >
-                          <X size={16} />
-                        </button>
-                      </div>
-                    )}
-                    <div className="flex gap-2">
-                      <input 
-                        type="file" 
-                        accept="image/*"
-                        className="hidden"
-                        ref={fileInputRef}
-                        onChange={handleImageUpload}
-                      />
-                      <button 
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={isUploading}
-                        className="w-full bg-dark-900 border border-white/10 hover:border-gold-500 text-gray-300 hover:text-gold-500 px-4 py-2.5 rounded-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
-                      >
-                        {isUploading ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
-                        <span>Fazer Upload de Arquivo</span>
-                      </button>
-                    </div>
+                    <ImageInput 
+                      value={formData.image}
+                      onChange={(val) => setFormData({...formData, image: val})}
+                      placeholder="Cole o link do Imgur/IMGBB aqui..."
+                      folder="products"
+                      aspectRatio={1}
+                    />
                   </div>
 
                   {/* Gallery Images */}
