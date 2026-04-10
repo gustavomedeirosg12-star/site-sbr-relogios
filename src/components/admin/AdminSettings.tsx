@@ -57,6 +57,7 @@ export function AdminSettings() {
                 value={formData.heroBgUrl}
                 onChange={(val) => setFormData({...formData, heroBgUrl: val})}
                 placeholder="https://i.imgur.com/..."
+                aspectRatio={16/9}
               />
               <p className="text-xs text-gray-500 mt-2">Recomendado: Imagem escura ou com filtro, resolução 1920x1080.</p>
             </div>
@@ -82,6 +83,7 @@ export function AdminSettings() {
                 value={formData.experienceBgUrl}
                 onChange={(val) => setFormData({...formData, experienceBgUrl: val})}
                 placeholder="https://i.imgur.com/..."
+                aspectRatio={4/3}
               />
               <p className="text-xs text-gray-500 mt-2">Recomendado: Foto de unboxing, caixas ou detalhes. Formato quadrado ou 4:3.</p>
             </div>
@@ -104,6 +106,7 @@ export function AdminSettings() {
                 value={formData.craftsmanshipBgUrl}
                 onChange={(val) => setFormData({...formData, craftsmanshipBgUrl: val})}
                 placeholder="https://i.imgur.com/..."
+                aspectRatio={3/4}
               />
               <p className="text-xs text-gray-500 mt-2">Recomendado: Imagem vertical ou de alta resolução mostrando detalhes do maquinário.</p>
             </div>
@@ -131,6 +134,7 @@ export function AdminSettings() {
                 value={formData.categorySuperCloneBgUrl}
                 onChange={(val) => setFormData({...formData, categorySuperCloneBgUrl: val})}
                 placeholder="URL da imagem..."
+                aspectRatio={4/5}
               />
             </div>
 
@@ -144,6 +148,7 @@ export function AdminSettings() {
                 value={formData.categoryPremiumBgUrl}
                 onChange={(val) => setFormData({...formData, categoryPremiumBgUrl: val})}
                 placeholder="URL da imagem..."
+                aspectRatio={4/5}
               />
             </div>
 
@@ -157,6 +162,7 @@ export function AdminSettings() {
                 value={formData.categoryAcoBgUrl}
                 onChange={(val) => setFormData({...formData, categoryAcoBgUrl: val})}
                 placeholder="URL da imagem..."
+                aspectRatio={4/5}
               />
             </div>
           </div>

@@ -12,22 +12,19 @@ export function Craftsmanship() {
   });
 
   // Animations for the background image
-  // Instead of scaling to 2x (which pixelates), we scale subtly to 1.15
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
-  // Instead of fading out to black, we keep it visible but darken it slightly
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 0.5, 0.3]);
-  // We add a blur effect that increases as you scroll, bringing text into focus
   const blur = useTransform(scrollYProgress, [0, 0.5, 1], ["blur(0px)", "blur(4px)", "blur(8px)"]);
 
   // Text 1: Maquinário (0 to 0.33)
-  const text1Opacity = useTransform(scrollYProgress, [0, 0.05, 0.25, 0.33], [0, 1, 1, 0]);
-  const text1Y = useTransform(scrollYProgress, [0, 0.05, 0.25, 0.33], [40, 0, 0, -40]);
-  const text1Blur = useTransform(scrollYProgress, [0, 0.05, 0.25, 0.33], ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
+  const text1Opacity = useTransform(scrollYProgress, [0, 0.05, 0.28, 0.33], [0, 1, 1, 0]);
+  const text1Y = useTransform(scrollYProgress, [0, 0.05, 0.28, 0.33], [40, 0, 0, -40]);
+  const text1Blur = useTransform(scrollYProgress, [0, 0.05, 0.28, 0.33], ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
 
   // Text 2: Vidro de Safira (0.33 to 0.66)
-  const text2Opacity = useTransform(scrollYProgress, [0.33, 0.38, 0.58, 0.66], [0, 1, 1, 0]);
-  const text2Y = useTransform(scrollYProgress, [0.33, 0.38, 0.58, 0.66], [40, 0, 0, -40]);
-  const text2Blur = useTransform(scrollYProgress, [0.33, 0.38, 0.58, 0.66], ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
+  const text2Opacity = useTransform(scrollYProgress, [0.33, 0.38, 0.61, 0.66], [0, 1, 1, 0]);
+  const text2Y = useTransform(scrollYProgress, [0.33, 0.38, 0.61, 0.66], [40, 0, 0, -40]);
+  const text2Blur = useTransform(scrollYProgress, [0.33, 0.38, 0.61, 0.66], ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
 
   // Text 3: Aço 904L (0.66 to 1)
   const text3Opacity = useTransform(scrollYProgress, [0.66, 0.71, 0.95, 1], [0, 1, 1, 0]);
@@ -38,7 +35,7 @@ export function Craftsmanship() {
   const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <section ref={containerRef} className="relative h-[400vh] bg-dark-900">
+    <section ref={containerRef} className="relative h-[200vh] bg-dark-900">
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
         
         {/* Background Image that scales and blurs */}

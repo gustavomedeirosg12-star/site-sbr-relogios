@@ -328,12 +328,6 @@ export function Catalog() {
                   <span className="text-gold-500 text-xs font-bold uppercase tracking-widest block">
                     {selectedProduct.category}
                   </span>
-                  <div className="flex items-center gap-1.5 text-red-500 bg-red-500/10 px-2.5 py-1 rounded-sm border border-red-500/20 animate-pulse">
-                    <Users size={12} />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">
-                      {8 + (selectedProduct.id % 15)} pessoas vendo agora
-                    </span>
-                  </div>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">{selectedProduct.name}</h2>
                 
@@ -408,7 +402,7 @@ export function Catalog() {
                     className="w-full bg-transparent hover:bg-white/5 text-gray-300 border border-white/10 hover:border-white/30 py-4 rounded-sm font-medium transition-all duration-300 flex items-center justify-center gap-2"
                   >
                     <MessageCircle size={18} />
-                    Tirar dúvidas no WhatsApp
+                    Dúvidas? Fale no WhatsApp
                   </button>
                 </div>
 
