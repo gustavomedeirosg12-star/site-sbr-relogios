@@ -8,12 +8,18 @@ export interface SiteSettings {
   heroBgUrl: string;
   experienceBgUrl: string;
   craftsmanshipBgUrl: string;
+  categorySuperCloneBgUrl: string;
+  categoryPremiumBgUrl: string;
+  categoryAcoBgUrl: string;
 }
 
 const defaultSettings: SiteSettings = {
   heroBgUrl: 'https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=2000',
   experienceBgUrl: 'https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=1000',
-  craftsmanshipBgUrl: 'https://i.ibb.co/YBTGFJ4z/2423.png'
+  craftsmanshipBgUrl: 'https://i.ibb.co/YBTGFJ4z/2423.png',
+  categorySuperCloneBgUrl: 'https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&q=80&w=800',
+  categoryPremiumBgUrl: 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&q=80&w=800',
+  categoryAcoBgUrl: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=800',
 };
 
 interface StoreContextType {

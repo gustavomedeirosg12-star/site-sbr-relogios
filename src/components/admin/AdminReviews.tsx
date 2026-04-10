@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Trash2, Star } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
+import { ImageInput } from './ImageInput';
 
 export function AdminReviews() {
   const { reviews, addReview, deleteReview } = useStore();
@@ -86,14 +87,13 @@ export function AdminReviews() {
                   placeholder="Ex: Submariner Date"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">URL da Imagem (Opcional)</label>
-                <input
-                  type="url"
+              <div className="col-span-1 md:col-span-2">
+                <label className="block text-sm font-medium text-gray-400 mb-1">URL ou Upload da Imagem do Produto (Opcional)</label>
+                <ImageInput 
                   value={newReview.productImage}
-                  onChange={(e) => setNewReview({ ...newReview, productImage: e.target.value })}
-                  className="w-full bg-dark-900 border border-white/10 rounded-sm px-4 py-2 text-white focus:border-gold-500 outline-none"
+                  onChange={(val) => setNewReview({ ...newReview, productImage: val })}
                   placeholder="https://..."
+                  folder="reviews"
                 />
               </div>
             </div>

@@ -20,19 +20,19 @@ export function Craftsmanship() {
   const blur = useTransform(scrollYProgress, [0, 0.5, 1], ["blur(0px)", "blur(4px)", "blur(8px)"]);
 
   // Text 1: Maquinário (0 to 0.33)
-  const text1Opacity = useTransform(scrollYProgress, [0, 0.15, 0.3], [0, 1, 0]);
-  const text1Y = useTransform(scrollYProgress, [0, 0.15, 0.3], [40, 0, -40]);
-  const text1Blur = useTransform(scrollYProgress, [0, 0.15, 0.3], ["blur(10px)", "blur(0px)", "blur(10px)"]);
+  const text1Opacity = useTransform(scrollYProgress, [0, 0.05, 0.25, 0.33], [0, 1, 1, 0]);
+  const text1Y = useTransform(scrollYProgress, [0, 0.05, 0.25, 0.33], [40, 0, 0, -40]);
+  const text1Blur = useTransform(scrollYProgress, [0, 0.05, 0.25, 0.33], ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
 
   // Text 2: Vidro de Safira (0.33 to 0.66)
-  const text2Opacity = useTransform(scrollYProgress, [0.33, 0.5, 0.66], [0, 1, 0]);
-  const text2Y = useTransform(scrollYProgress, [0.33, 0.5, 0.66], [40, 0, -40]);
-  const text2Blur = useTransform(scrollYProgress, [0.33, 0.5, 0.66], ["blur(10px)", "blur(0px)", "blur(10px)"]);
+  const text2Opacity = useTransform(scrollYProgress, [0.33, 0.38, 0.58, 0.66], [0, 1, 1, 0]);
+  const text2Y = useTransform(scrollYProgress, [0.33, 0.38, 0.58, 0.66], [40, 0, 0, -40]);
+  const text2Blur = useTransform(scrollYProgress, [0.33, 0.38, 0.58, 0.66], ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
 
   // Text 3: Aço 904L (0.66 to 1)
-  const text3Opacity = useTransform(scrollYProgress, [0.66, 0.85, 1], [0, 1, 0]);
-  const text3Y = useTransform(scrollYProgress, [0.66, 0.85, 1], [40, 0, -40]);
-  const text3Blur = useTransform(scrollYProgress, [0.66, 0.85, 1], ["blur(10px)", "blur(0px)", "blur(10px)"]);
+  const text3Opacity = useTransform(scrollYProgress, [0.66, 0.71, 0.95, 1], [0, 1, 1, 0]);
+  const text3Y = useTransform(scrollYProgress, [0.66, 0.71, 0.95, 1], [40, 0, 0, -40]);
+  const text3Blur = useTransform(scrollYProgress, [0.66, 0.71, 0.95, 1], ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
 
   // Progress Bar
   const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);

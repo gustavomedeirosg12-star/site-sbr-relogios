@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../../context/StoreContext';
 import { Save, Image as ImageIcon } from 'lucide-react';
+import { ImageInput } from './ImageInput';
 
 export function AdminSettings() {
   const { siteSettings, updateSiteSettings } = useStore();
@@ -51,13 +52,11 @@ export function AdminSettings() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">URL da Imagem</label>
-              <input 
-                type="url" 
+              <label className="block text-sm font-medium text-gray-400 mb-2">URL ou Upload da Imagem</label>
+              <ImageInput 
                 value={formData.heroBgUrl}
-                onChange={e => setFormData({...formData, heroBgUrl: e.target.value})}
+                onChange={(val) => setFormData({...formData, heroBgUrl: val})}
                 placeholder="https://i.imgur.com/..."
-                className="w-full bg-dark-900 border border-white/10 rounded-sm px-4 py-2.5 text-white focus:outline-none focus:border-gold-500"
               />
               <p className="text-xs text-gray-500 mt-2">Recomendado: Imagem escura ou com filtro, resolução 1920x1080.</p>
             </div>
@@ -78,13 +77,11 @@ export function AdminSettings() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">URL da Imagem</label>
-              <input 
-                type="url" 
+              <label className="block text-sm font-medium text-gray-400 mb-2">URL ou Upload da Imagem</label>
+              <ImageInput 
                 value={formData.experienceBgUrl}
-                onChange={e => setFormData({...formData, experienceBgUrl: e.target.value})}
+                onChange={(val) => setFormData({...formData, experienceBgUrl: val})}
                 placeholder="https://i.imgur.com/..."
-                className="w-full bg-dark-900 border border-white/10 rounded-sm px-4 py-2.5 text-white focus:outline-none focus:border-gold-500"
               />
               <p className="text-xs text-gray-500 mt-2">Recomendado: Foto de unboxing, caixas ou detalhes. Formato quadrado ou 4:3.</p>
             </div>
@@ -102,18 +99,65 @@ export function AdminSettings() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">URL da Imagem</label>
-              <input 
-                type="url" 
+              <label className="block text-sm font-medium text-gray-400 mb-2">URL ou Upload da Imagem</label>
+              <ImageInput 
                 value={formData.craftsmanshipBgUrl}
-                onChange={e => setFormData({...formData, craftsmanshipBgUrl: e.target.value})}
+                onChange={(val) => setFormData({...formData, craftsmanshipBgUrl: val})}
                 placeholder="https://i.imgur.com/..."
-                className="w-full bg-dark-900 border border-white/10 rounded-sm px-4 py-2.5 text-white focus:outline-none focus:border-gold-500"
               />
               <p className="text-xs text-gray-500 mt-2">Recomendado: Imagem vertical ou de alta resolução mostrando detalhes do maquinário.</p>
             </div>
             <div className="relative aspect-[3/4] w-48 bg-dark-900 rounded-sm overflow-hidden border border-white/10">
               <img src={formData.craftsmanshipBgUrl} alt="Preview" className="w-full h-full object-cover" />
+            </div>
+          </div>
+        </div>
+
+        {/* Categories Section */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 border-b border-white/10 pb-2">
+            <ImageIcon size={20} className="text-gold-500" />
+            <h3 className="text-lg font-medium text-white">Imagens das Categorias (Nossas Linhas)</h3>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Super Clone */}
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-gray-400">Super Clone</label>
+              <div className="relative aspect-[4/5] w-full bg-dark-900 rounded-sm overflow-hidden border border-white/10 mb-2">
+                <img src={formData.categorySuperCloneBgUrl} alt="Super Clone" className="w-full h-full object-cover" />
+              </div>
+              <ImageInput 
+                value={formData.categorySuperCloneBgUrl}
+                onChange={(val) => setFormData({...formData, categorySuperCloneBgUrl: val})}
+                placeholder="URL da imagem..."
+              />
+            </div>
+
+            {/* Premium */}
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-gray-400">Premium</label>
+              <div className="relative aspect-[4/5] w-full bg-dark-900 rounded-sm overflow-hidden border border-white/10 mb-2">
+                <img src={formData.categoryPremiumBgUrl} alt="Premium" className="w-full h-full object-cover" />
+              </div>
+              <ImageInput 
+                value={formData.categoryPremiumBgUrl}
+                onChange={(val) => setFormData({...formData, categoryPremiumBgUrl: val})}
+                placeholder="URL da imagem..."
+              />
+            </div>
+
+            {/* Aço 316L */}
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-gray-400">Aço Cirúrgico 316L</label>
+              <div className="relative aspect-[4/5] w-full bg-dark-900 rounded-sm overflow-hidden border border-white/10 mb-2">
+                <img src={formData.categoryAcoBgUrl} alt="Aço 316L" className="w-full h-full object-cover" />
+              </div>
+              <ImageInput 
+                value={formData.categoryAcoBgUrl}
+                onChange={(val) => setFormData({...formData, categoryAcoBgUrl: val})}
+                placeholder="URL da imagem..."
+              />
             </div>
           </div>
         </div>

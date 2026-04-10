@@ -225,6 +225,38 @@ export const mockReviews: Review[] = [
     product: 'Datejust 41mm',
     initials: 'TA',
     productImage: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=800'
+  },
+  {
+    id: 4,
+    name: 'Cliente Satisfeito',
+    text: 'Relógio perfeito, acabamento impecável. Recomendo a todos!',
+    product: 'Modelo Exclusivo',
+    initials: 'CS',
+    productImage: 'https://i.ibb.co/vx5mr59X/Whats-App-Image-2026-04-09-at-23-02-00-1.jpg'
+  },
+  {
+    id: 5,
+    name: 'Cliente Satisfeito',
+    text: 'Chegou super rápido e a qualidade é surreal. Muito obrigado!',
+    product: 'Modelo Premium',
+    initials: 'CS',
+    productImage: 'https://i.ibb.co/BV6PxmFP/Whats-App-Image-2026-04-09-at-23-02-00.jpg'
+  },
+  {
+    id: 6,
+    name: 'Cliente Satisfeito',
+    text: 'Atendimento nota 10 e o produto é exatamente como no vídeo.',
+    product: 'Super Clone',
+    initials: 'CS',
+    productImage: 'https://i.ibb.co/cSvgJvvn/1.jpg'
+  },
+  {
+    id: 7,
+    name: 'Cliente Satisfeito',
+    text: 'Melhor compra que já fiz. O peso e os detalhes são idênticos.',
+    product: 'Aço 904L',
+    initials: 'CS',
+    productImage: 'https://i.ibb.co/d06vghHZ/Whats-App-Image-2026-04-09-at-23-01-59.jpg'
   }
 ];
 export const faqs = [
