@@ -6,7 +6,7 @@ import { Order } from '../../data/mock';
 export function AdminOrders() {
   const { orders, updateOrder, deleteOrder } = useStore();
   const [editingOrder, setEditingOrder] = useState<Order | null>(null);
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState<Order['status']>('Pendente');
   const [trackingCode, setTrackingCode] = useState('');
 
   const getStatusColor = (status: string) => {
@@ -152,7 +152,7 @@ export function AdminOrders() {
                 <label className="block text-sm font-medium text-gray-300 mb-1">Status do Pedido</label>
                 <select 
                   value={status}
-                  onChange={e => setStatus(e.target.value)}
+                  onChange={e => setStatus(e.target.value as Order['status'])}
                   className="w-full bg-dark-900 border border-white/10 rounded-sm px-4 py-2.5 text-white focus:outline-none focus:border-gold-500"
                 >
                   <option value="Pendente">Pendente</option>

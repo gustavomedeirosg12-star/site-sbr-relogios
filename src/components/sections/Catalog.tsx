@@ -5,6 +5,133 @@ import { useCart, boxOptions, BoxOption } from '../../context/CartContext';
 import { useStore } from '../../context/StoreContext';
 import { Product } from '../../data/mock';
 
+interface ProductCardProps {
+  key?: React.Key;
+  product: Product;
+  openQuickView: (p: Product) => void;
+  handleWhatsApp: (name: string) => void;
+}
+
+function ProductCard({ product, openQuickView, handleWhatsApp }: ProductCardProps) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const images = [product.image, ...(product.gallery || [])].filter(Boolean);
+
+  const nextImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      className={`group bg-dark-900 border rounded-sm overflow-hidden transition-all duration-500 flex flex-col hover:-translate-y-2 ${
+        product.featured 
+          ? 'border-gold-500/30 shadow-[0_0_20px_rgba(212,175,55,0.1)] hover:shadow-[0_10px_40px_rgba(212,175,55,0.2)] hover:border-gold-500/60' 
+          : 'border-white/5 hover:border-gold-500/30 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)]'
+      }`}
+    >
+      <div 
+        className="relative aspect-square overflow-hidden bg-dark-800 cursor-pointer group/image"
+        onClick={() => openQuickView(product)}
+      >
+        <img 
+          src={images[currentImageIndex]} 
+          alt={product.name}
+          className="w-full h-full object-cover group-hover/image:scale-110 transition-transform duration-1000 ease-out opacity-80 group-hover/image:opacity-100"
+        />
+        
+        {images.length > 1 && (
+          <>
+            <button 
+              onClick={prevImage}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-1.5 rounded-full opacity-0 group-hover/image:opacity-100 transition-opacity hover:bg-black z-20"
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <button 
+              onClick={nextImage}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-1.5 rounded-full opacity-0 group-hover/image:opacity-100 transition-opacity hover:bg-black z-20"
+            >
+              <ChevronRight size={16} />
+            </button>
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-20 opacity-0 group-hover/image:opacity-100 transition-opacity">
+              {images.map((_, idx) => (
+                <div key={idx} className={`w-1.5 h-1.5 rounded-full ${idx === currentImageIndex ? 'bg-gold-500' : 'bg-white/50'}`} />
+              ))}
+            </div>
+          </>
+        )}
+
+        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+          <div className="bg-dark-900/80 backdrop-blur-sm text-white px-4 py-2 rounded-sm border border-white/10 flex items-center gap-2 transform translate-y-4 group-hover/image:translate-y-0 transition-all duration-300">
+            <ZoomIn size={16} />
+            <span className="text-sm font-medium">Ver Detalhes</span>
+          </div>
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent opacity-60 pointer-events-none"></div>
+        {product.featured && (
+          <div className="absolute top-4 left-4 bg-gradient-to-r from-gold-600 to-gold-400 text-dark-900 text-[10px] font-bold px-3 py-1.5 uppercase tracking-widest rounded-sm shadow-lg pointer-events-none z-10">
+            Mais Vendido
+          </div>
+        )}
+      </div>
+      <div className="p-8 flex flex-col flex-1 relative z-10 bg-dark-900">
+        <div className="flex justify-between items-start mb-3">
+          <span className="text-gold-500 text-[10px] font-medium uppercase tracking-widest">
+            {product.category}
+          </span>
+          {product.featured && (
+            <span className="text-red-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 bg-red-500/10 px-2 py-0.5 rounded-sm border border-red-500/20 animate-pulse">
+              <Flame size={12} /> Últimas Unidades
+            </span>
+          )}
+        </div>
+        
+        <h3 
+          className="text-2xl font-serif text-white mb-6 group-hover:text-gold-400 transition-colors duration-300 cursor-pointer"
+          onClick={() => openQuickView(product)}
+        >
+          {product.name}
+        </h3>
+        
+        <div className="mt-auto">
+          <div className="mb-8">
+            <span className="text-3xl font-light text-white block tracking-tight">
+              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+            </span>
+            <span className="text-gray-500 text-xs tracking-wide">ou 12x no cartão de crédito</span>
+          </div>
+          
+          <div className="flex flex-col gap-3">
+            <button 
+              onClick={() => openQuickView(product)}
+              className="hover-shine w-full bg-gold-500 hover:bg-gold-400 text-dark-900 py-4 rounded-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider"
+            >
+              <ShoppingBag size={16} />
+              Comprar Agora
+            </button>
+            <button 
+              onClick={() => handleWhatsApp(product.name)}
+              className="w-full bg-transparent hover:bg-white/5 text-gray-300 border border-white/10 hover:border-white/30 py-4 rounded-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+            >
+              <MessageCircle size={16} />
+              Dúvidas? Fale no WhatsApp
+            </button>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export function Catalog() {
   const { addToCart } = useCart();
   const { products } = useStore();
@@ -135,86 +262,12 @@ export function Catalog() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProducts.map((product, index) => (
-            <motion.div 
-              key={product.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className={`group bg-dark-900 border rounded-sm overflow-hidden transition-all duration-500 flex flex-col hover:-translate-y-2 ${
-                product.featured 
-                  ? 'border-gold-500/30 shadow-[0_0_20px_rgba(212,175,55,0.1)] hover:shadow-[0_10px_40px_rgba(212,175,55,0.2)] hover:border-gold-500/60' 
-                  : 'border-white/5 hover:border-gold-500/30 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)]'
-              }`}
-            >
-              <div 
-                className="relative aspect-square overflow-hidden bg-dark-800 cursor-pointer"
-                onClick={() => openQuickView(product)}
-              >
-                <img 
-                  src={product.image} 
-                  alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out opacity-80 group-hover:opacity-100"
-                />
-                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="bg-dark-900/80 backdrop-blur-sm text-white px-4 py-2 rounded-sm border border-white/10 flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                    <ZoomIn size={16} />
-                    <span className="text-sm font-medium">Ver Detalhes</span>
-                  </div>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent opacity-60 pointer-events-none"></div>
-                {product.featured && (
-                  <div className="absolute top-4 left-4 bg-gradient-to-r from-gold-600 to-gold-400 text-dark-900 text-[10px] font-bold px-3 py-1.5 uppercase tracking-widest rounded-sm shadow-lg pointer-events-none">
-                    Mais Vendido
-                  </div>
-                )}
-              </div>
-              <div className="p-8 flex flex-col flex-1 relative z-10 bg-dark-900">
-                <div className="flex justify-between items-start mb-3">
-                  <span className="text-gold-500 text-[10px] font-medium uppercase tracking-widest">
-                    {product.category}
-                  </span>
-                  {product.featured && (
-                    <span className="text-red-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 bg-red-500/10 px-2 py-0.5 rounded-sm border border-red-500/20 animate-pulse">
-                      <Flame size={12} /> Últimas Unidades
-                    </span>
-                  )}
-                </div>
-                
-                <h3 
-                  className="text-2xl font-serif text-white mb-6 group-hover:text-gold-400 transition-colors duration-300 cursor-pointer"
-                  onClick={() => openQuickView(product)}
-                >
-                  {product.name}
-                </h3>
-                
-                <div className="mt-auto">
-                  <div className="mb-8">
-                    <span className="text-3xl font-light text-white block tracking-tight">
-                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
-                    </span>
-                    <span className="text-gray-500 text-xs tracking-wide">ou 12x no cartão de crédito</span>
-                  </div>
-                  
-                  <div className="flex flex-col gap-3">
-                    <button 
-                      onClick={() => openQuickView(product)}
-                      className="hover-shine w-full bg-gold-500 hover:bg-gold-400 text-dark-900 py-4 rounded-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider"
-                    >
-                      <ShoppingBag size={16} />
-                      Comprar Agora
-                    </button>
-                    <button 
-                      onClick={() => handleWhatsApp(product.name)}
-                      className="w-full bg-transparent hover:bg-white/5 text-gray-300 border border-white/10 hover:border-white/30 py-4 rounded-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 text-sm"
-                    >
-                      <MessageCircle size={16} />
-                      Dúvidas? Fale no WhatsApp
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+            <ProductCard 
+              key={product.id} 
+              product={product} 
+              openQuickView={openQuickView} 
+              handleWhatsApp={handleWhatsApp} 
+            />
           ))}
         </div>
         

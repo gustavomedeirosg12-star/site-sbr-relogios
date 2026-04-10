@@ -40,7 +40,7 @@ export function Concierge() {
 
   const generateSystemPrompt = () => {
     const catalogInfo = products.map(p => `- ${p.name} (${p.brand}) - ${p.category} - R$ ${p.price}`).join('\n');
-    const faqInfo = faqs.map(f => `Q: ${f.question}\nA: ${f.answer}`).join('\n\n');
+    const faqInfo = faqs.flatMap(c => c.items).map(f => `Q: ${f.question}\nA: ${f.answer}`).join('\n\n');
 
     return `Você é o Concierge de Luxo da "SBR Relógios", uma boutique especializada em relógios de alto padrão (Super Clones 1:1, Premium e Aço 316L).
 Seu tom deve ser extremamente educado, sofisticado, prestativo e persuasivo, como um vendedor de uma grife suíça (ex: Rolex, Patek Philippe).

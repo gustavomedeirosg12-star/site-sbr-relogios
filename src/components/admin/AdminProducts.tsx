@@ -83,7 +83,7 @@ export function AdminProducts() {
 
     try {
       setIsUploadingGallery(true);
-      const uploadPromises = files.map(async (file) => {
+      const uploadPromises = files.map(async (file: File) => {
         const storageRef = ref(storage, `products/gallery_${Date.now()}_${file.name}`);
         const snapshot = await uploadBytes(storageRef, file);
         return await getDownloadURL(snapshot.ref);
@@ -329,72 +329,43 @@ export function AdminProducts() {
                   {/* Gallery Images */}
                   <div className="pt-4 border-t border-white/10">
                     <label className="block text-sm font-medium text-gray-300 mb-2 flex items-center justify-between">
-                      <span>Galeria de Imagens (URLs ou Upload)</span>
+                      <span>Galeria de Imagens</span>
                       <span className="text-xs text-gray-500">{formData.gallery.length} imagens</span>
                     </label>
                     
-                    <div className="flex gap-2 mb-3">
-                      <input 
-                        type="url" 
-                        id="galleryUrlInput"
-                        placeholder="Cole o link e clique em +"
-                        className="flex-1 bg-dark-900 border border-white/10 rounded-sm px-4 py-2 text-white focus:outline-none focus:border-gold-500 text-sm"
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            e.preventDefault();
-                            const input = e.currentTarget;
-                            if (input.value) {
-                              setFormData(prev => ({ ...prev, gallery: [...prev.gallery, input.value] }));
-                              input.value = '';
-                            }
-                          }
-                        }}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const input = document.getElementById('galleryUrlInput') as HTMLInputElement;
-                          if (input && input.value) {
-                            setFormData(prev => ({ ...prev, gallery: [...prev.gallery, input.value] }));
-                            input.value = '';
-                          }
-                        }}
-                        className="bg-gold-500 hover:bg-gold-600 text-dark-900 px-3 rounded-sm flex items-center justify-center transition-colors"
-                      >
-                        <Plus size={20} />
-                      </button>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-2 mb-3">
+                    <div className="space-y-3 mb-3">
                       {formData.gallery.map((img, idx) => (
-                        <div key={idx} className="relative aspect-square rounded-sm overflow-hidden border border-white/10 bg-dark-900 group">
-                          <img src={img} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
+                        <div key={idx} className="flex gap-2 items-start">
+                          <div className="flex-1">
+                            <ImageInput 
+                              value={img}
+                              onChange={(val) => {
+                                const newGallery = [...formData.gallery];
+                                newGallery[idx] = val;
+                                setFormData({...formData, gallery: newGallery});
+                              }}
+                              placeholder="Cole o link da imagem..."
+                              folder="products"
+                              aspectRatio={1}
+                            />
+                          </div>
                           <button 
                             type="button"
                             onClick={() => removeGalleryImage(idx)}
-                            className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="bg-red-500 text-white p-2.5 rounded-sm hover:bg-red-600 transition-colors mt-0"
                           >
-                            <X size={12} />
+                            <X size={18} />
                           </button>
                         </div>
                       ))}
                       
-                      <input 
-                        type="file" 
-                        accept="image/*"
-                        multiple
-                        className="hidden"
-                        ref={galleryInputRef}
-                        onChange={handleGalleryUpload}
-                      />
-                      <button 
+                      <button
                         type="button"
-                        onClick={() => galleryInputRef.current?.click()}
-                        disabled={isUploadingGallery}
-                        className="aspect-square flex flex-col items-center justify-center gap-2 bg-dark-900 border border-dashed border-white/20 hover:border-gold-500 text-gray-400 hover:text-gold-500 rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={() => setFormData(prev => ({ ...prev, gallery: [...prev.gallery, ''] }))}
+                        className="w-full bg-dark-900 border border-dashed border-white/20 hover:border-gold-500 text-gray-400 hover:text-gold-500 py-3 rounded-sm transition-colors flex items-center justify-center gap-2 text-sm"
                       >
-                        {isUploadingGallery ? <Loader2 size={20} className="animate-spin" /> : <ImagePlus size={20} />}
-                        <span className="text-xs text-center px-2">Upload<br/>Fotos</span>
+                        <Plus size={18} />
+                        Adicionar Imagem à Galeria
                       </button>
                     </div>
                   </div>

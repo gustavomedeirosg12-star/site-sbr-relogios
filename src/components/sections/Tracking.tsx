@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Search, Package, Truck, CheckCircle, Clock, ExternalLink } from 'lucide-react';
+import { Search, Package, Truck, CheckCircle, Clock, ExternalLink, X } from 'lucide-react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { Order } from '../../data/mock';
