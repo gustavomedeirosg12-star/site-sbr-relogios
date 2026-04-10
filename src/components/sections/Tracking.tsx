@@ -54,8 +54,11 @@ export function Tracking() {
         <div className="text-center mb-12">
           <h2 className="font-serif text-3xl md:text-4xl font-bold text-white mb-4">Rastrear Pedido</h2>
           <div className="w-24 h-1 bg-gold-500 mx-auto mb-6"></div>
-          <p className="text-gray-400">
+          <p className="text-gray-400 mb-2">
             Acompanhe o status da sua compra em tempo real.
+          </p>
+          <p className="text-gold-500/80 text-sm">
+            * O código de rastreio dos Correios será enviado automaticamente para o seu WhatsApp assim que o pedido for despachado.
           </p>
         </div>
 

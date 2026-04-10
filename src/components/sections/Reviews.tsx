@@ -1,9 +1,13 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Star, CheckCircle } from 'lucide-react';
-import { reviews } from '../../data/mock';
+import { useStore } from '../../context/StoreContext';
 
 export function Reviews() {
+  const { reviews } = useStore();
+
+  if (!reviews || reviews.length === 0) return null;
+
   return (
     <section className="py-24 bg-dark-900 border-y border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

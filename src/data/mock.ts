@@ -192,7 +192,16 @@ export const mockCustomers: Customer[] = [
   }
 ];
 
-export const reviews = [
+export interface Review {
+  id: number;
+  name: string;
+  text: string;
+  product: string;
+  initials: string;
+  productImage: string;
+}
+
+export const mockReviews: Review[] = [
   {
     id: 1,
     name: 'Marcelo F.',

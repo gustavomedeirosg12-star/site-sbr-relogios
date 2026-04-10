@@ -40,15 +40,6 @@ body {
 }
 
 /* Custom Luxury Animations */
-@keyframes slowZoom {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.15); }
-}
-
-.animate-slow-zoom {
-  animation: slowZoom 20s ease-out forwards;
-}
-
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }

@@ -3,11 +3,12 @@ import { AdminProducts } from './AdminProducts';
 import { AdminOrders } from './AdminOrders';
 import { AdminCustomers } from './AdminCustomers';
 import { AdminSettings } from './AdminSettings';
-import { LayoutDashboard, Package, ShoppingCart, Users, LogOut, Image as ImageIcon } from 'lucide-react';
+import { AdminReviews } from './AdminReviews';
+import { LayoutDashboard, Package, ShoppingCart, Users, LogOut, Image as ImageIcon, MessageSquareQuote } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export function AdminLayout() {
-  const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'customers' | 'settings'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'customers' | 'settings' | 'reviews'>('products');
   const { logout } = useAuth();
 
   return (
@@ -69,6 +70,18 @@ export function AdminLayout() {
             <ImageIcon size={18} />
             Aparência do Site
           </button>
+
+          <button 
+            onClick={() => setActiveTab('reviews')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-sm text-sm font-medium transition-colors ${
+              activeTab === 'reviews' 
+                ? 'bg-gold-500/10 text-gold-500 border border-gold-500/20' 
+                : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+            }`}
+          >
+            <MessageSquareQuote size={18} />
+            Depoimentos
+          </button>
         </nav>
 
         <div className="p-4 border-t border-white/5">
@@ -88,6 +101,7 @@ export function AdminLayout() {
         {activeTab === 'orders' && <AdminOrders />}
         {activeTab === 'customers' && <AdminCustomers />}
         {activeTab === 'settings' && <AdminSettings />}
+        {activeTab === 'reviews' && <AdminReviews />}
       </main>
     </div>
   );

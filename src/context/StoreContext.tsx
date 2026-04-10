@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { collection, doc, onSnapshot, setDoc, updateDoc, deleteDoc, query, orderBy, getDocs } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { db, auth } from '../firebase';
-import { products as initialProducts, mockOrders, mockCustomers, Product, Order, Customer } from '../data/mock';
+import { products as initialProducts, mockOrders, mockCustomers, mockReviews, Product, Order, Customer, Review } from '../data/mock';
 
 export interface SiteSettings {
   heroBgUrl: string;
@@ -20,12 +20,15 @@ interface StoreContextType {
   products: Product[];
   orders: Order[];
   customers: Customer[];
+  reviews: Review[];
   siteSettings: SiteSettings;
   addProduct: (product: Omit<Product, 'id'>) => Promise<void>;
   updateProduct: (id: number, product: Partial<Product>) => Promise<void>;
   deleteProduct: (id: number) => Promise<void>;
   updateOrder: (id: string, order: Partial<Order>) => Promise<void>;
   deleteOrder: (id: string) => Promise<void>;
+  addReview: (review: Omit<Review, 'id'>) => Promise<void>;
+  deleteReview: (id: number) => Promise<void>;
   updateSiteSettings: (settings: Partial<SiteSettings>) => Promise<void>;
 }
 
@@ -37,6 +40,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(defaultSettings);
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -69,6 +73,18 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       // Ignore permission errors silently for public viewers if any
     });
 
+    // Listen to Reviews (Public)
+    const qReviews = query(collection(db, 'reviews'));
+    const unsubReviews = onSnapshot(qReviews, (snapshot) => {
+      const revs: Review[] = [];
+      snapshot.forEach((doc) => {
+        revs.push({ id: Number(doc.id), ...doc.data() } as Review);
+      });
+      setReviews(revs);
+    }, (error) => {
+      // Ignore permission errors silently
+    });
+
     // Listen to Site Settings (Public)
     const unsubSettings = onSnapshot(doc(db, 'settings', 'general'), (docSnap) => {
       if (docSnap.exists()) {
@@ -82,6 +98,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       unsubProducts();
+      unsubReviews();
       unsubSettings();
     };
   }, []);
@@ -110,6 +127,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         if (customersSnap.empty) {
           for (const c of mockCustomers) {
             await setDoc(doc(db, 'customers', c.id), c);
+          }
+        }
+
+        const reviewsSnap = await getDocs(collection(db, 'reviews'));
+        if (reviewsSnap.empty) {
+          for (const r of mockReviews) {
+            await setDoc(doc(db, 'reviews', r.id.toString()), r);
           }
         }
       } catch (error) {
@@ -198,6 +222,25 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const addReview = async (review: Omit<Review, 'id'>) => {
+    try {
+      const newId = reviews.length > 0 ? Math.max(...reviews.map(r => r.id)) + 1 : 1;
+      await setDoc(doc(db, 'reviews', newId.toString()), review);
+    } catch (error) {
+      console.error("Error adding review:", error);
+      throw error;
+    }
+  };
+
+  const deleteReview = async (id: number) => {
+    try {
+      await deleteDoc(doc(db, 'reviews', id.toString()));
+    } catch (error) {
+      console.error("Error deleting review:", error);
+      throw error;
+    }
+  };
+
   const updateSiteSettings = async (settings: Partial<SiteSettings>) => {
     try {
       const settingsRef = doc(db, 'settings', 'general');
@@ -209,7 +252,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <StoreContext.Provider value={{ products, orders, customers, siteSettings, addProduct, updateProduct, deleteProduct, updateOrder, deleteOrder, updateSiteSettings }}>
+    <StoreContext.Provider value={{ products, orders, customers, reviews, siteSettings, addProduct, updateProduct, deleteProduct, updateOrder, deleteOrder, addReview, deleteReview, updateSiteSettings }}>
       {children}
     </StoreContext.Provider>
   );

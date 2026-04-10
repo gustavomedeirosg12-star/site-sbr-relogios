@@ -10,6 +10,8 @@ export function CartDrawer() {
   const { items, removeFromCart, updateQuantity, total, isCartOpen, setIsCartOpen } = useCart();
   const [step, setStep] = useState<CheckoutStep>('cart');
   const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('');
 
   const totalFormatted = new Intl.NumberFormat('pt-BR', {
@@ -22,12 +24,14 @@ export function CartDrawer() {
     setTimeout(() => {
       setStep('cart');
       setName('');
+      setPhone('');
+      setAddress('');
       setPaymentMethod('');
     }, 300);
   };
 
   const handleWhatsAppCheckout = () => {
-    if (!name || !paymentMethod) return;
+    if (!name || !phone || !address || !paymentMethod) return;
 
     const itemsList = items
       .map((i) => `${i.quantity}x ${i.name}\n   ↳ ${i.box.name} (+R$ ${i.box.price.toFixed(2)})\n   Subtotal: R$ ${((i.price + i.box.price) * i.quantity).toFixed(2)}`)
@@ -35,7 +39,7 @@ export function CartDrawer() {
     
     const paymentText = paymentMethod === 'pix' ? 'PIX' : 'Cartão de Crédito';
     
-    const text = `Olá! Gostaria de finalizar meu pedido.\n\n*Nome:* ${name}\n*Forma de Pagamento:* ${paymentText}\n\n*Pedido:*\n${itemsList}\n\n*Frete:* Grátis\n*Total:* ${totalFormatted}`;
+    const text = `Olá! Gostaria de finalizar meu pedido.\n\n*Dados do Cliente:*\nNome: ${name}\nTelefone: ${phone}\nEndereço: ${address}\n\n*Forma de Pagamento:* ${paymentText}\n\n*Pedido:*\n${itemsList}\n\n*Frete:* Grátis\n*Total:* ${totalFormatted}`;
     
     const encoded = encodeURIComponent(text);
     window.open(`https://wa.me/553484304734?text=${encoded}`, '_blank');
@@ -156,6 +160,31 @@ export function CartDrawer() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Telefone / WhatsApp
+                    </label>
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full bg-dark-800 border border-white/10 rounded-sm px-4 py-3 text-white focus:outline-none focus:border-gold-500 transition-colors"
+                      placeholder="Ex: (11) 99999-9999"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Endereço de Entrega Completo
+                    </label>
+                    <textarea
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      className="w-full bg-dark-800 border border-white/10 rounded-sm px-4 py-3 text-white focus:outline-none focus:border-gold-500 transition-colors min-h-[80px]"
+                      placeholder="Rua, Número, Bairro, Cidade - Estado, CEP"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
                       Forma de Pagamento
                     </label>
                     <div className="grid grid-cols-2 gap-4">
@@ -247,7 +276,7 @@ export function CartDrawer() {
                     </p>
                     <button
                       onClick={handleWhatsAppCheckout}
-                      disabled={!name || !paymentMethod}
+                      disabled={!name || !phone || !address || !paymentMethod}
                       className="w-full bg-[#25D366] hover:bg-[#128C7E] disabled:opacity-50 disabled:cursor-not-allowed text-white py-4 rounded-sm font-medium transition-colors flex items-center justify-center gap-2"
                     >
                       Finalizar no WhatsApp
