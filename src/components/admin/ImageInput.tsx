@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback } from 'react';
-import { Upload, Link as LinkIcon, Loader2, X, Check, Settings2 } from 'lucide-react';
+import { Upload, Link as LinkIcon, Loader2, X, Check, Settings2, Crop } from 'lucide-react';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../firebase';
 import Cropper from 'react-easy-crop';
@@ -44,7 +44,7 @@ export function ImageInput({ value, onChange, placeholder, folder = 'images', as
   };
 
   const handleUploadCroppedImage = async () => {
-    if (!imageSrc || !croppedAreaPixels || !originalFile) return;
+    if (!imageSrc || !croppedAreaPixels) return;
 
     try {
       setIsUploading(true);
@@ -54,7 +54,8 @@ export function ImageInput({ value, onChange, placeholder, folder = 'images', as
       if (!croppedBlob) throw new Error('Failed to crop image');
 
       // Upload to Firebase
-      const storageRef = ref(storage, `${folder}/${Date.now()}_cropped_${originalFile.name}`);
+      const fileName = originalFile ? originalFile.name : `edited_${Date.now()}.jpg`;
+      const storageRef = ref(storage, `${folder}/${Date.now()}_cropped_${fileName}`);
       const snapshot = await uploadBytes(storageRef, croppedBlob);
       const downloadURL = await getDownloadURL(snapshot.ref);
       
@@ -65,7 +66,7 @@ export function ImageInput({ value, onChange, placeholder, folder = 'images', as
       setOriginalFile(null);
     } catch (error) {
       console.error("Error uploading image:", error);
-      alert('Erro ao fazer upload da imagem. Verifique se o Firebase Storage está ativado.');
+      alert('Erro ao fazer upload da imagem. Verifique se o Firebase Storage está ativado e se a imagem permite edição.');
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
@@ -81,13 +82,21 @@ export function ImageInput({ value, onChange, placeholder, folder = 'images', as
   return (
     <div className="flex flex-col gap-2">
       {value && (
-        <div className="relative w-24 h-24 rounded-sm overflow-hidden border border-white/10 bg-dark-900 mb-2 group">
+        <div className="relative w-32 h-32 rounded-sm overflow-hidden border border-white/10 bg-dark-900 mb-2 group">
           <img src={value} alt="Preview" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+            <button 
+              type="button"
+              onClick={() => setImageSrc(value)}
+              className="text-white hover:text-gold-500 bg-dark-900 p-2 rounded-full transition-colors"
+              title="Recortar/Editar imagem"
+            >
+              <Crop size={16} />
+            </button>
             <button 
               type="button"
               onClick={() => onChange('')}
-              className="text-red-400 hover:text-red-300 bg-dark-900 p-1.5 rounded-full"
+              className="text-red-400 hover:text-red-300 bg-dark-900 p-2 rounded-full transition-colors"
               title="Remover imagem"
             >
               <X size={16} />
@@ -137,7 +146,11 @@ export function ImageInput({ value, onChange, placeholder, folder = 'images', as
               </button>
             </div>
             
-            <div className="relative w-full h-[60vh] bg-dark-800">
+            <div className="bg-blue-500/10 border-b border-blue-500/20 p-3 text-blue-400 text-sm flex items-center justify-center text-center">
+              💡 Dica: Clique e arraste a imagem para os lados ou para cima/baixo para ajustar o enquadramento.
+            </div>
+
+            <div className="relative w-full h-[50vh] sm:h-[60vh] bg-dark-800">
               <Cropper
                 image={imageSrc}
                 crop={crop}

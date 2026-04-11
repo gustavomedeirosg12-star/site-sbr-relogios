@@ -39,13 +39,13 @@ function ProductCard({ product, openQuickView, handleWhatsApp }: ProductCardProp
       }`}
     >
       <div 
-        className="relative aspect-square overflow-hidden bg-dark-800 cursor-pointer group/image"
+        className="relative w-full overflow-hidden bg-dark-800 cursor-pointer group/image"
         onClick={() => openQuickView(product)}
       >
         <img 
           src={images[currentImageIndex]} 
           alt={product.name}
-          className="w-full h-full object-cover group-hover/image:scale-110 transition-transform duration-1000 ease-out opacity-80 group-hover/image:opacity-100"
+          className="w-full h-auto object-cover group-hover/image:scale-110 transition-transform duration-1000 ease-out opacity-80 group-hover/image:opacity-100"
         />
         
         {images.length > 1 && (
