@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback } from 'react';
-import { Upload, Link as LinkIcon, Loader2, X, Check } from 'lucide-react';
+import { Upload, Link as LinkIcon, Loader2, X, Check, Settings2 } from 'lucide-react';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../firebase';
 import Cropper from 'react-easy-crop';
@@ -13,7 +13,7 @@ interface ImageInputProps {
   aspectRatio?: number;
 }
 
-export function ImageInput({ value, onChange, placeholder, folder = 'images', aspectRatio = 1 }: ImageInputProps) {
+export function ImageInput({ value, onChange, placeholder, folder = 'images', aspectRatio: initialAspectRatio = 1 }: ImageInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   
@@ -23,6 +23,7 @@ export function ImageInput({ value, onChange, placeholder, folder = 'images', as
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
   const [originalFile, setOriginalFile] = useState<File | null>(null);
+  const [currentAspectRatio, setCurrentAspectRatio] = useState<number>(initialAspectRatio);
 
   const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
     setCroppedAreaPixels(croppedAreaPixels);
@@ -79,6 +80,21 @@ export function ImageInput({ value, onChange, placeholder, folder = 'images', as
 
   return (
     <div className="flex flex-col gap-2">
+      {value && (
+        <div className="relative w-24 h-24 rounded-sm overflow-hidden border border-white/10 bg-dark-900 mb-2 group">
+          <img src={value} alt="Preview" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+            <button 
+              type="button"
+              onClick={() => onChange('')}
+              className="text-red-400 hover:text-red-300 bg-dark-900 p-1.5 rounded-full"
+              title="Remover imagem"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        </div>
+      )}
       <div className="flex gap-2">
         <div className="relative flex-1">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -126,7 +142,7 @@ export function ImageInput({ value, onChange, placeholder, folder = 'images', as
                 image={imageSrc}
                 crop={crop}
                 zoom={zoom}
-                aspect={aspectRatio}
+                aspect={currentAspectRatio}
                 onCropChange={setCrop}
                 onCropComplete={onCropComplete}
                 onZoomChange={setZoom}
@@ -134,32 +150,49 @@ export function ImageInput({ value, onChange, placeholder, folder = 'images', as
               />
             </div>
             
-            <div className="p-4 border-t border-white/10 flex flex-col sm:flex-row gap-4 items-center justify-between bg-dark-900">
-              <div className="flex items-center gap-4 w-full sm:w-1/2">
-                <span className="text-xs text-gray-400 uppercase tracking-widest">Zoom</span>
-                <input
-                  type="range"
-                  value={zoom}
-                  min={1}
-                  max={3}
-                  step={0.1}
-                  aria-labelledby="Zoom"
-                  onChange={(e) => setZoom(Number(e.target.value))}
-                  className="w-full accent-gold-500"
-                />
+            <div className="p-4 border-t border-white/10 flex flex-col gap-4 bg-dark-900">
+              <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                <div className="flex items-center gap-4 w-full sm:w-1/2">
+                  <span className="text-xs text-gray-400 uppercase tracking-widest">Zoom</span>
+                  <input
+                    type="range"
+                    value={zoom}
+                    min={1}
+                    max={3}
+                    step={0.1}
+                    aria-labelledby="Zoom"
+                    onChange={(e) => setZoom(Number(e.target.value))}
+                    className="w-full accent-gold-500"
+                  />
+                </div>
+                
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <Settings2 size={16} className="text-gray-400" />
+                  <select 
+                    value={currentAspectRatio}
+                    onChange={(e) => setCurrentAspectRatio(Number(e.target.value))}
+                    className="bg-dark-800 border border-white/10 rounded-sm px-2 py-1.5 text-white text-sm focus:outline-none focus:border-gold-500"
+                  >
+                    <option value={1}>Quadrado (1:1)</option>
+                    <option value={4/3}>Padrão (4:3)</option>
+                    <option value={16/9}>Widescreen (16:9)</option>
+                    <option value={3/4}>Retrato (3:4)</option>
+                    <option value={9/16}>Stories (9:16)</option>
+                  </select>
+                </div>
               </div>
               
-              <div className="flex gap-3 w-full sm:w-auto">
+              <div className="flex gap-3 justify-end mt-2">
                 <button
                   onClick={cancelCrop}
-                  className="flex-1 sm:flex-none px-4 py-2 border border-white/10 text-gray-300 rounded-sm hover:bg-white/5 transition-colors text-sm font-medium"
+                  className="px-4 py-2 border border-white/10 text-gray-300 rounded-sm hover:bg-white/5 transition-colors text-sm font-medium"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={handleUploadCroppedImage}
                   disabled={isUploading}
-                  className="flex-1 sm:flex-none px-4 py-2 bg-gold-500 text-dark-900 rounded-sm hover:bg-gold-400 transition-colors text-sm font-bold flex items-center justify-center gap-2"
+                  className="px-4 py-2 bg-gold-500 text-dark-900 rounded-sm hover:bg-gold-400 transition-colors text-sm font-bold flex items-center justify-center gap-2"
                 >
                   {isUploading ? (
                     <>
