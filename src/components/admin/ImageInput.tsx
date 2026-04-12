@@ -82,24 +82,26 @@ export function ImageInput({ value, onChange, placeholder, folder = 'images', as
   return (
     <div className="flex flex-col gap-2">
       {value && (
-        <div className="relative w-32 h-32 rounded-sm overflow-hidden border border-white/10 bg-dark-900 mb-2 group">
-          <img src={value} alt="Preview" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+        <div className="mb-4 flex flex-col gap-2">
+          <div className="relative w-32 h-32 rounded-sm overflow-hidden border border-white/10 bg-dark-900">
+            <img src={value} alt="Preview" className="w-full h-full object-cover" />
+          </div>
+          <div className="flex gap-2">
             <button 
               type="button"
               onClick={() => setImageSrc(value)}
-              className="text-white hover:text-gold-500 bg-dark-900 p-2 rounded-full transition-colors"
-              title="Recortar/Editar imagem"
+              className="bg-dark-800 border border-white/10 hover:border-gold-500 text-gray-300 hover:text-gold-500 px-3 py-1.5 rounded-sm transition-colors flex items-center gap-2 text-xs font-medium"
             >
-              <Crop size={16} />
+              <Crop size={14} />
+              Recortar Foto
             </button>
             <button 
               type="button"
               onClick={() => onChange('')}
-              className="text-red-400 hover:text-red-300 bg-dark-900 p-2 rounded-full transition-colors"
-              title="Remover imagem"
+              className="bg-dark-800 border border-white/10 hover:border-red-500 text-gray-300 hover:text-red-400 px-3 py-1.5 rounded-sm transition-colors flex items-center gap-2 text-xs font-medium"
             >
-              <X size={16} />
+              <X size={14} />
+              Remover
             </button>
           </div>
         </div>

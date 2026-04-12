@@ -135,13 +135,12 @@ export function AdminReviews() {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Depoimento</label>
+              <label className="block text-sm font-medium text-gray-400 mb-1">Depoimento (Opcional)</label>
               <textarea
-                required
                 value={newReview.text}
                 onChange={(e) => setNewReview({ ...newReview, text: e.target.value })}
                 className="w-full bg-dark-900 border border-white/10 rounded-sm px-4 py-2 text-white focus:border-gold-500 outline-none min-h-[100px]"
-                placeholder="O que o cliente achou do produto..."
+                placeholder="Deixe em branco se quiser postar apenas a foto..."
               />
             </div>
             <div className="flex justify-end gap-3">

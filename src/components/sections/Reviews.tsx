@@ -47,9 +47,11 @@ export function Reviews() {
                   ))}
                 </div>
                 
-                <p className="text-gray-300 mb-6 italic leading-relaxed text-sm">
-                  "{review.text}"
-                </p>
+                {review.text && review.text.trim() !== '' && (
+                  <p className="text-gray-300 mb-6 italic leading-relaxed text-sm">
+                    "{review.text}"
+                  </p>
+                )}
                 
                 <div className="flex items-center gap-4 mt-auto pt-4 border-t border-white/5">
                   <div className="w-10 h-10 rounded-full bg-dark-900 border border-white/10 flex items-center justify-center text-gold-500 font-serif font-bold text-sm shrink-0">
