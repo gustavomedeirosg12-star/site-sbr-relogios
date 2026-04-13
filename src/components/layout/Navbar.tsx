@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ShoppingBag, Search } from 'lucide-react';
+import { Menu, X, ShoppingBag, Search, Instagram } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { SearchModal } from '../ui/SearchModal';
 
@@ -64,6 +64,16 @@ export function Navbar() {
             
             <div className="w-px h-4 bg-white/10 mx-2"></div>
             
+            <a 
+              href="https://instagram.com/sbr.relogios" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-gold-500 transition-colors"
+              title="Siga-nos no Instagram"
+            >
+              <Instagram size={18} strokeWidth={1.5} />
+            </a>
+
             <button 
               onClick={() => setIsSearchOpen(true)}
               className="text-gray-400 hover:text-white transition-colors"
@@ -82,6 +92,14 @@ export function Navbar() {
           </div>
 
           <div className="md:hidden flex items-center gap-4">
+            <a 
+              href="https://instagram.com/sbr.relogios" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-gray-300 hover:text-gold-500 transition-colors"
+            >
+              <Instagram size={22} />
+            </a>
             <button 
               onClick={() => setIsSearchOpen(true)}
               className="text-gray-300 hover:text-gold-500 transition-colors"

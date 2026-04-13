@@ -16,6 +16,7 @@ import { About } from './components/sections/About';
 import { Trust } from './components/sections/Trust';
 import { Reviews } from './components/sections/Reviews';
 import { FAQ } from './components/sections/FAQ';
+import { InstagramSection } from './components/sections/InstagramSection';
 import { Tracking } from './components/sections/Tracking';
 import { WhatsAppButton } from './components/ui/WhatsAppButton';
 import { Concierge } from './components/ui/Concierge';
@@ -47,6 +48,7 @@ function Storefront() {
         <About />
         <Reviews />
         <FAQ />
+        <InstagramSection />
       </main>
 
       <Footer />

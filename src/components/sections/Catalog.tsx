@@ -39,13 +39,13 @@ function ProductCard({ product, openQuickView, handleWhatsApp }: ProductCardProp
       }`}
     >
       <div 
-        className="relative w-full overflow-hidden bg-dark-800 cursor-pointer group/image"
+        className="relative w-full aspect-square overflow-hidden bg-dark-800 cursor-pointer group/image"
         onClick={() => openQuickView(product)}
       >
         <img 
           src={images[currentImageIndex]} 
           alt={product.name}
-          className="w-full h-auto object-cover group-hover/image:scale-110 transition-transform duration-1000 ease-out opacity-80 group-hover/image:opacity-100"
+          className="w-full h-full object-cover group-hover/image:scale-110 transition-transform duration-1000 ease-out opacity-80 group-hover/image:opacity-100"
         />
         
         {images.length > 1 && (
@@ -96,36 +96,34 @@ function ProductCard({ product, openQuickView, handleWhatsApp }: ProductCardProp
         </div>
         
         <h3 
-          className="text-2xl font-serif text-white mb-6 group-hover:text-gold-400 transition-colors duration-300 cursor-pointer"
+          className="text-2xl font-serif text-white mb-4 group-hover:text-gold-400 transition-colors duration-300 cursor-pointer line-clamp-2"
           onClick={() => openQuickView(product)}
         >
           {product.name}
         </h3>
         
-        <div className="mt-auto">
-          <div className="mb-8">
-            <span className="text-3xl font-light text-white block tracking-tight">
-              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
-            </span>
-            <span className="text-gray-500 text-xs tracking-wide">ou 12x no cartão de crédito</span>
-          </div>
-          
-          <div className="flex flex-col gap-3">
-            <button 
-              onClick={() => openQuickView(product)}
-              className="hover-shine w-full bg-gold-500 hover:bg-gold-400 text-dark-900 py-4 rounded-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider"
-            >
-              <ShoppingBag size={16} />
-              Comprar Agora
-            </button>
-            <button 
-              onClick={() => handleWhatsApp(product.name)}
-              className="w-full bg-transparent hover:bg-white/5 text-gray-300 border border-white/10 hover:border-white/30 py-4 rounded-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 text-sm"
-            >
-              <MessageCircle size={16} />
-              Dúvidas? Fale no WhatsApp
-            </button>
-          </div>
+        <div className="mb-6">
+          <span className="text-3xl font-light text-white block tracking-tight">
+            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+          </span>
+          <span className="text-gray-500 text-xs tracking-wide">ou 12x no cartão de crédito</span>
+        </div>
+        
+        <div className="flex flex-col gap-3 mt-auto">
+          <button 
+            onClick={() => openQuickView(product)}
+            className="hover-shine w-full bg-gold-500 hover:bg-gold-400 text-dark-900 py-4 rounded-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider"
+          >
+            <ShoppingBag size={16} />
+            Comprar Agora
+          </button>
+          <button 
+            onClick={() => handleWhatsApp(product.name)}
+            className="w-full bg-transparent hover:bg-white/5 text-gray-300 border border-white/10 hover:border-white/30 py-4 rounded-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+          >
+            <MessageCircle size={16} />
+            Dúvidas? Fale no WhatsApp
+          </button>
         </div>
       </div>
     </motion.div>

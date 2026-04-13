@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, CreditCard, Lock } from 'lucide-react';
+import { ShieldCheck, Lock, Instagram } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -13,6 +13,17 @@ export function Footer() {
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
               Especialistas em relógios de luxo. Trabalhamos com as melhores linhas do mercado, desde modelos de entrada até superclones com maquinário suíço.
             </p>
+            <div className="flex items-center gap-4 mb-6">
+              <a 
+                href="https://instagram.com/sbr.relogios" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-dark-800 border border-white/10 flex items-center justify-center text-gray-400 hover:text-gold-500 hover:border-gold-500 transition-all duration-300"
+                title="Siga-nos no Instagram"
+              >
+                <Instagram size={18} />
+              </a>
+            </div>
             <div className="flex items-center gap-2 text-gray-500 text-xs">
               <ShieldCheck size={16} className="text-gold-500" />
               <span>Site 100% Seguro e Criptografado</span>
