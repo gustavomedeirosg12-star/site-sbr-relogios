@@ -47,8 +47,8 @@ export const categories = [
   },
   {
     id: 'aco316l',
-    name: 'Aço Cirúrgico 316L',
-    description: 'Durabilidade extrema. Peças em aço 316L ou metal inoxidável de alta resistência que não perdem a cor.',
+    name: 'Primeira Linha (Aço 316L)',
+    description: 'Excelente custo-benefício. Construída em aço 316L e metais de alta resistência, garante ótima durabilidade e um brilho sofisticado que acompanha você por muito tempo, exigindo apenas cuidados básicos para manter sua elegância.',
     image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=800',
   },
 ];
@@ -82,7 +82,7 @@ export const products: Product[] = [
     id: 3,
     name: 'Datejust 41mm Silver',
     brand: 'Rolex',
-    category: 'Aço Cirúrgico 316L',
+    category: 'Primeira Linha (Aço 316L)',
     price: 2100.00,
     image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=800',
     gallery: [],
@@ -118,7 +118,7 @@ export const products: Product[] = [
     id: 6,
     name: 'Seamaster Diver 300M',
     brand: 'Omega',
-    category: 'Aço Cirúrgico 316L',
+    category: 'Primeira Linha (Aço 316L)',
     price: 1200.00,
     image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=800',
     gallery: [],

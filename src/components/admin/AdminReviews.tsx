@@ -134,15 +134,6 @@ export function AdminReviews() {
                 />
               </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Depoimento (Opcional)</label>
-              <textarea
-                value={newReview.text}
-                onChange={(e) => setNewReview({ ...newReview, text: e.target.value })}
-                className="w-full bg-dark-900 border border-white/10 rounded-sm px-4 py-2 text-white focus:border-gold-500 outline-none min-h-[100px]"
-                placeholder="Deixe em branco se quiser postar apenas a foto..."
-              />
-            </div>
             <div className="flex justify-end gap-3">
               <button
                 type="button"
@@ -187,8 +178,6 @@ export function AdminReviews() {
                 <Star key={i} size={14} fill="currentColor" />
               ))}
             </div>
-            
-            <p className="text-gray-300 italic text-sm mb-4 line-clamp-4">"{review.text}"</p>
             
             <div className="flex items-center gap-3 mt-auto pt-4 border-t border-white/5">
               <div className="w-8 h-8 rounded-full bg-dark-900 border border-white/10 flex items-center justify-center text-gold-500 font-serif font-bold text-xs">

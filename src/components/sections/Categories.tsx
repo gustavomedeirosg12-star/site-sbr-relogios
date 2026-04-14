@@ -10,11 +10,24 @@ export function Categories() {
     // Dispatch event to update filter in Catalog
     window.dispatchEvent(new CustomEvent('setCategoryFilter', { detail: categoryName }));
     
-    // Scroll to catalog
-    const catalogSection = document.getElementById('catalogo');
-    if (catalogSection) {
-      catalogSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    // Scroll to catalog with a small delay to ensure filter is applied
+    setTimeout(() => {
+      const catalogSection = document.getElementById('catalogo');
+      if (catalogSection) {
+        catalogSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
+  const handleViewAll = () => {
+    window.dispatchEvent(new CustomEvent('setCategoryFilter', { detail: 'Todos' }));
+    
+    setTimeout(() => {
+      const catalogSection = document.getElementById('catalogo');
+      if (catalogSection) {
+        catalogSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   return (
@@ -60,6 +73,21 @@ export function Categories() {
             );
           })}
         </div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="mt-16 text-center"
+        >
+          <button 
+            onClick={handleViewAll}
+            className="inline-flex items-center justify-center px-8 py-3 border border-gold-500 text-gold-500 hover:bg-gold-500 hover:text-dark-900 rounded-sm font-medium uppercase tracking-wider transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+          >
+            Ver Todos os Modelos
+          </button>
+        </motion.div>
       </div>
     </section>
   );

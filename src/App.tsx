@@ -12,7 +12,6 @@ import { BrandTicker } from './components/sections/BrandTicker';
 import { Categories } from './components/sections/Categories';
 import { Catalog } from './components/sections/Catalog';
 import { Experience } from './components/sections/Experience';
-import { About } from './components/sections/About';
 import { Trust } from './components/sections/Trust';
 import { Reviews } from './components/sections/Reviews';
 import { FAQ } from './components/sections/FAQ';
@@ -45,7 +44,6 @@ function Storefront() {
         <Categories />
         <Catalog />
         <Experience />
-        <About />
         <Reviews />
         <FAQ />
         <InstagramSection />

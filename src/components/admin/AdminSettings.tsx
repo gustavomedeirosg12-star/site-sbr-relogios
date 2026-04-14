@@ -154,7 +154,7 @@ export function AdminSettings() {
 
             {/* Aço 316L */}
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-400">Aço Cirúrgico 316L</label>
+              <label className="block text-sm font-medium text-gray-400">Primeira Linha (Aço 316L)</label>
               <div className="relative aspect-[4/5] w-full bg-dark-900 rounded-sm overflow-hidden border border-white/10 mb-2">
                 <img src={formData.categoryAcoBgUrl} alt="Aço 316L" className="w-full h-full object-cover" />
               </div>

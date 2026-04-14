@@ -30,44 +30,14 @@ export function Reviews() {
               className="bg-dark-800 rounded-sm border border-white/5 relative overflow-hidden group flex flex-col"
             >
               {review.productImage && (
-                <div className="w-full relative overflow-hidden">
+                <div className="w-full h-full relative overflow-hidden">
                   <img 
                     src={review.productImage} 
-                    alt={`Relógio recebido por ${review.name}`} 
-                    className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
+                    alt={`Avaliação de cliente`} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark-800 via-dark-800/20 to-transparent"></div>
                 </div>
               )}
-              
-              <div className={`p-8 flex-1 flex flex-col ${review.productImage ? 'pt-0 relative z-10 -mt-10' : ''}`}>
-                <div className="flex items-center gap-1 text-gold-500 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} fill="currentColor" />
-                  ))}
-                </div>
-                
-                {review.text && review.text.trim() !== '' && (
-                  <p className="text-gray-300 mb-6 italic leading-relaxed text-sm">
-                    "{review.text}"
-                  </p>
-                )}
-                
-                <div className="flex items-center gap-4 mt-auto pt-4 border-t border-white/5">
-                  <div className="w-10 h-10 rounded-full bg-dark-900 border border-white/10 flex items-center justify-center text-gold-500 font-serif font-bold text-sm shrink-0">
-                    {review.initials}
-                  </div>
-                  <div>
-                    <h4 className="text-white font-medium flex items-center gap-1.5 text-sm">
-                      {review.name}
-                      <CheckCircle size={14} className="text-green-500" />
-                    </h4>
-                    <span className="text-gray-500 text-xs uppercase tracking-wider">
-                      Comprou: {review.product}
-                    </span>
-                  </div>
-                </div>
-              </div>
             </motion.div>
           ))}
         </div>

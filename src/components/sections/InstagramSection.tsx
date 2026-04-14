@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Instagram } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -6,14 +6,43 @@ export function InstagramSection() {
   // Substitua este link pelo link real do seu Instagram
   const instagramUrl = "https://instagram.com/sbr.relogios"; 
   
-  // Imagens de placeholder (você pode trocar depois ou deixar essas que combinam com o nicho)
+  // Imagens do feed
   const feedImages = [
-    "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1587836374828-cb4387df3eb7?auto=format&fit=crop&q=80"
+    "https://69d917505386887646d2db3b.imgix.net/4343.PNG",
+    "https://69d917505386887646d2db3b.imgix.net/3233.PNG",
+    "https://69d917505386887646d2db3b.imgix.net/212.PNG",
+    "https://69d917505386887646d2db3b.imgix.net/3121.PNG",
+    "https://69d917505386887646d2db3b.imgix.net/4343.PNG", // Duplicado para preencher
+    "https://69d917505386887646d2db3b.imgix.net/3233.PNG"
   ];
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // Velocidade da rolagem
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+  };
 
   return (
     <section className="py-24 bg-dark-900 border-t border-white/5 overflow-hidden">
@@ -44,31 +73,43 @@ export function InstagramSection() {
       </div>
 
       {/* Carrossel de Imagens do Feed */}
-      <div className="flex overflow-x-auto pb-8 scrollbar-hide gap-4 px-4 sm:px-6 lg:px-8 max-w-[100vw] snap-x">
+      <div 
+        ref={scrollRef}
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        className={`flex overflow-x-auto pb-8 scrollbar-hide gap-4 px-4 sm:px-6 lg:px-8 max-w-[100vw] snap-x ${isDragging ? 'cursor-grabbing snap-none' : 'cursor-grab'}`}
+      >
         {feedImages.map((img, idx) => (
-          <motion.a
+          <motion.div
             key={idx}
-            href={instagramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: idx * 0.1 }}
-            className="relative w-64 h-64 sm:w-72 sm:h-72 flex-shrink-0 group overflow-hidden rounded-sm cursor-pointer snap-center border border-white/5"
+            className="relative w-64 h-64 sm:w-72 sm:h-72 flex-shrink-0 group overflow-hidden rounded-sm snap-center border border-white/5"
           >
             <img 
               src={img} 
               alt="Instagram feed" 
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100 pointer-events-none"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-dark-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
-              <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
+            <div className="absolute inset-0 bg-gradient-to-t from-dark-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+            <a 
+              href={instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
+              onClick={(e) => {
+                if (isDragging) e.preventDefault();
+              }}
+            >
+              <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-white/20 transition-colors">
                 <Instagram size={24} className="text-white" />
               </div>
-            </div>
-          </motion.a>
+            </a>
+          </motion.div>
         ))}
       </div>
     </section>

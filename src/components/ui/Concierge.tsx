@@ -69,7 +69,7 @@ Regras:
   };
 
   const handleSend = async () => {
-    if (!input.trim() || !process.env.GEMINI_API_KEY) return;
+    if (!input.trim()) return;
 
     const userMsg: Message = {
       id: Date.now().toString(),
@@ -81,6 +81,20 @@ Regras:
     setMessages(prev => [...prev, userMsg]);
     setInput('');
     setIsTyping(true);
+
+    if (!process.env.GEMINI_API_KEY) {
+      setTimeout(() => {
+        const errorMsg: Message = {
+          id: (Date.now() + 1).toString(),
+          text: 'A chave da API do Gemini não está configurada. Por favor, adicione a GEMINI_API_KEY nas configurações do projeto para que eu possa responder.',
+          sender: 'ai',
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, errorMsg]);
+        setIsTyping(false);
+      }, 1000);
+      return;
+    }
 
     try {
       // Format history for Gemini

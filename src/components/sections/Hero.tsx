@@ -29,11 +29,11 @@ export function Hero() {
           />
         </motion.div>
         {/* Adjusted gradients for better clarity while maintaining text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/40 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-dark-900/60 via-transparent to-dark-900/60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/40 to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-dark-900/60 via-transparent to-dark-900/60 z-10" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-16">
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-16">
         <div className="flex flex-col items-center">
           <motion.div 
             initial={{ opacity: 0, height: 0 }}
@@ -109,7 +109,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.5 }}
-            className="flex items-center justify-center gap-3 text-sm text-gray-400"
+            className="flex items-center justify-center gap-3 text-sm text-gray-400 mb-12"
           >
             <div className="flex text-gold-500 drop-shadow-[0_0_5px_rgba(212,175,55,0.5)]">
               {[...Array(5)].map((_, i) => (
@@ -117,6 +117,22 @@ export function Hero() {
               ))}
             </div>
             <span className="tracking-wider">Mais de <strong className="text-white font-medium">500 clientes</strong> satisfeitos</span>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 2, ease: "easeOut" }}
+            className="flex flex-col items-center justify-center gap-2"
+          >
+            <span className="text-gray-500 text-xs uppercase tracking-[0.2em]">Role para descobrir</span>
+            <motion.div 
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              className="w-5 h-8 border border-white/20 rounded-full flex justify-center p-1"
+            >
+              <motion.div className="w-1 h-2 bg-gold-500 rounded-full" />
+            </motion.div>
           </motion.div>
         </div>
       </div>

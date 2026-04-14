@@ -174,7 +174,7 @@ export function Catalog() {
     window.open(`https://wa.me/553484304734?text=${encoded}`, '_blank');
   };
 
-  const filters = ['Todos', 'Super Clone', 'Premium', 'Aço Cirúrgico 316L'];
+  const filters = ['Todos', 'Super Clone', 'Premium', 'Primeira Linha (Aço 316L)'];
   const brands = ['Todas', 'Rolex', 'Patek Philippe', 'Audemars Piguet', 'Omega'];
 
   const openQuickView = (product: Product) => {

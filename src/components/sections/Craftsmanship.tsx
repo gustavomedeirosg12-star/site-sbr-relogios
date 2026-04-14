@@ -35,7 +35,7 @@ export function Craftsmanship() {
   const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <section ref={containerRef} className="relative h-[200vh] bg-dark-900">
+    <section ref={containerRef} className="relative h-[300vh] bg-dark-900">
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
         
         {/* Background Image that scales and blurs */}

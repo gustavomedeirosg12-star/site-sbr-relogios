@@ -282,7 +282,7 @@ export function AdminProducts() {
                       >
                         <option value="Super Clone">Super Clone</option>
                         <option value="Premium">Premium</option>
-                        <option value="Aço Cirúrgico 316L">Aço Cirúrgico 316L</option>
+                        <option value="Primeira Linha (Aço 316L)">Primeira Linha (Aço 316L)</option>
                       </select>
                     </div>
                   </div>
